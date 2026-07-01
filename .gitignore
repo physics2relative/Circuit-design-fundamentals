@@ -1,0 +1,63 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Build/simulation outputs
+build/
+out/
+logs/
+*.log
+*.jou
+*.rpt
+*.wlf
+*.vcd
+*.fst
+*.fsdb
+*.saif
+*.trn
+*.raw
+*.psf/
+psf/
+spectre.out
+input.scs
+
+# EDA/Cadence/Virtuoso generated or proprietary artifacts
+.cdsenv
+.cdsinit
+.cadence/
+*.oa
+*.cdl
+*.scs
+*.sp
+*.spi
+*.srr
+*.ahdlSimDB/
+*.artist_states
+simulation/
+netlist/
+maestro/results/
+maestro/views/
+
+# PDK/model/license files - never commit
+PDK/
+pdk/
+models/
+model/
+license/
+*.lic
+
+# Python/cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Archives and large binaries
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
