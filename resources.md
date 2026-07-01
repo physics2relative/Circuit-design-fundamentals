@@ -3,13 +3,13 @@
 ## Digital Design / RTL Interview
 
 - [Hardware Interview - Study Guide](https://www.hardware-interview.com/study)
-  - Digital Design/RTL 면접에서 자주 다루는 Verilog/SystemVerilog, FSM, FIFO, arbiter, STA, CDC, protocol/interface, RTL coding challenge 범위를 확인하기 위한 참고 자료입니다.
+  - Digital Design/RTL 면접에서 자주 다루는 Verilog, FSM, FIFO, arbiter, STA, CDC, protocol/interface, RTL coding challenge 범위를 확인하기 위한 참고 자료입니다.
   - 저장소에는 원문을 복사하지 않고, 개인 학습용 개념 정리와 직접 작성한 답변 템플릿만 정리합니다.
 
 ## Digital Design
 
 - Digital design textbooks
-- Verilog/SystemVerilog references
+- Verilog references
 - Static timing analysis references
 
 ## Analog Design

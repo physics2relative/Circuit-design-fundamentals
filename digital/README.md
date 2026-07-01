@@ -14,12 +14,12 @@ digital/
 
 ## Concepts
 
+- [Verilog](./concepts/01_verilog/README.md)
 - [Number Systems](./concepts/01_number_systems/README.md)
 - [Combinational Logic](./concepts/02_combinational_logic/README.md)
 - [Sequential Logic](./concepts/03_sequential_logic/README.md)
 - [FSM](./concepts/04_fsm/README.md)
 - [Timing and CDC](./concepts/05_timing_cdc/README.md)
-- [Verilog/SystemVerilog Basics](./concepts/06_verilog_systemverilog/README.md)
 - [RTL Interview Study Guide](./concepts/07_rtl_interview_study_guide/README.md)
 
 ## Projects

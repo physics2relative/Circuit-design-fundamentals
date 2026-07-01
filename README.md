@@ -12,7 +12,7 @@ analog/
   assets/               # 아날로그 회로도 이미지, 파형 캡처, 직접 그린 그림
 
 digital/
-  concepts/             # 조합논리, 순차논리, FSM, timing/CDC, Verilog/SystemVerilog 등 개념 정리
+  concepts/             # 조합논리, 순차논리, FSM, timing/CDC, Verilog 등 개념 정리
   projects/             # counter, UART, FIFO 등 RTL 프로젝트
   interview_questions/  # 디지털/RTL 면담/면접 질문
   assets/               # RTL 블록도, simulation waveform, timing diagram

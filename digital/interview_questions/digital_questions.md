@@ -2,38 +2,33 @@
 
 이 문서는 Digital Design/RTL 면접 대비용 질문과 짧은 답변 가이드입니다. 실제 면접에서는 한 문장 정의에서 멈추지 말고, **RTL 구현 방식, timing 영향, 검증 방법**까지 연결해서 답합니다.
 
-## 1. Verilog/SystemVerilog
+## 1. Verilog
 
-### Q1. `wire`, `reg`, `logic`의 차이는 무엇인가?
+### Q1. `wire`와 `reg`의 차이는 무엇인가?
 
-- `wire`: net 타입입니다. continuous assignment나 module 간 연결에 사용합니다.
-- `reg`: Verilog procedural block에서 값을 저장하는 변수 타입입니다. 이름과 달리 항상 flop을 의미하지는 않습니다.
-- `logic`: SystemVerilog의 4-state 변수 타입입니다. 일반 RTL에서는 `reg` 대신 많이 사용합니다.
+- `wire`: 회로의 연결선을 표현하는 net 타입입니다. `assign` 문이나 module 간 port 연결에 주로 사용합니다.
+- `reg`: `always`나 `initial` 같은 procedural block 안에서 값을 대입받는 변수 타입입니다. 이름 때문에 실제 register만 의미하는 것은 아닙니다.
 
 면접 답변:
 
-> `reg`는 실제 register를 뜻하는 것이 아니라 procedural assignment 대상이라는 뜻입니다. SystemVerilog에서는 대부분 `logic`을 사용해 혼동을 줄이고, 여러 driver가 필요한 net에는 `wire`를 사용합니다.
+> `wire`는 continuous assignment로 구동되는 연결선이고, `reg`는 procedural block에서 값을 대입받는 타입입니다. `reg`라고 해서 항상 flip-flop이 생기는 것은 아니며, clocked always block에서 쓰이면 register로 합성되고 조합 always block에서 쓰이면 조합논리로 합성될 수 있습니다.
 
 ### Q2. Blocking assignment와 non-blocking assignment의 차이는?
 
-- Blocking `=`: procedural block 안에서 순차적으로 즉시 반영되는 것처럼 동작합니다.
-- Non-blocking `<=`: RHS를 먼저 평가하고 time step 끝에 LHS를 갱신합니다.
+- Blocking `=`: procedural block 안에서 문장 순서대로 즉시 반영되는 것처럼 동작합니다.
+- Non-blocking `<=`: 우변을 먼저 평가하고, 같은 time step의 끝에서 좌변을 갱신합니다.
 
 면접 답변:
 
 > 조합논리에는 blocking, 순차논리에는 non-blocking을 쓰는 것이 일반적입니다. Clocked block에서 blocking을 쓰면 pipeline register가 같은 cycle에 전파되는 것처럼 simulation될 수 있어 의도와 다른 RTL이 됩니다.
 
-### Q3. `always_comb`과 `always_ff`의 차이는?
+### Q3. `always @(*)`를 쓰는 이유는?
 
-- `always_comb`: 조합논리 표현. sensitivity list를 자동으로 처리하고 latch inference를 줄입니다.
-- `always_ff`: clock/reset 기반 순차논리 표현. flop 의도를 명확히 합니다.
+`always @(*)`는 조합논리 block의 sensitivity list를 자동으로 잡아줍니다. 입력 신호를 sensitivity list에서 빠뜨리는 실수를 줄일 수 있습니다.
 
-### Q4. `bit`와 `logic`의 차이는?
+### Q4. `initial` block은 언제 쓰는가?
 
-- `bit`: 2-state 타입입니다. 0/1만 표현합니다.
-- `logic`: 4-state 타입입니다. 0/1/X/Z를 표현합니다.
-
-면접에서는 RTL debug 관점에서 X-propagation 확인이 필요하므로 `logic`을 주로 사용한다고 답하면 좋습니다.
+Testbench에서 초기값 설정, clock 생성, stimulus 작성에 자주 사용합니다. 합성 가능한 RTL에서는 target과 tool에 따라 제한이 있으므로 일반적인 register 동작은 reset과 clocked always block으로 표현하는 것이 안전합니다.
 
 ---
 
@@ -56,7 +51,7 @@ Y = A ? ~B : B
 
 원인:
 
-- `always_comb` 안에서 모든 branch가 output을 assign하지 않음
+- `always @(*)` 안에서 모든 branch가 output을 assign하지 않음
 - `case`에 default가 없음
 - if/else 일부 경로에서 값이 유지되어야 하는 것처럼 작성함
 
@@ -64,7 +59,7 @@ Y = A ? ~B : B
 
 - block 시작에 default assignment 작성
 - 모든 branch assign
-- `unique case`, `default` 사용
+- `case` 문에서 필요한 모든 조건과 `default` 처리
 
 ### Q8. Glitch는 왜 생기고 언제 문제가 되는가?
 
