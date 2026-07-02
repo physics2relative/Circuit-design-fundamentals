@@ -41,8 +41,6 @@ module tb_toggle_sync;
     endtask
 
     initial begin
-        $dumpfile("sim/toggle_sync.vcd");
-        $dumpvars(0, tb_toggle_sync);
 
         rst_fast_n = 1'b0;
         rst_slow_n = 1'b0;

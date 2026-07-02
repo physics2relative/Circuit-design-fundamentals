@@ -27,6 +27,7 @@ tb/
 
 sim/
   run_xrun.sh
+  xrun_shm.tcl
 ```
 
 ## 실행
@@ -47,7 +48,7 @@ XRUN=/tools/cadence/Xcelium2203.002/bin/xrun bash sim/run_xrun.sh
 ## 출력물
 
 - compile/run log: `sim/xrun_work/<tb_name>/xrun.log`
-- waveform dump: `sim/*.vcd`
+- waveform database: `sim/xrun_work/<tb_name>/waves.shm`
 
 ## 중요한 한계
 

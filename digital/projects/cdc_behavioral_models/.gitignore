@@ -1,7 +1,7 @@
 # Xcelium/xrun generated files
 sim/xrun_work/
-sim/*.vcd
 sim/*.log
+sim/*.shm
 xrun.*
 xcelium.d/
 *.history

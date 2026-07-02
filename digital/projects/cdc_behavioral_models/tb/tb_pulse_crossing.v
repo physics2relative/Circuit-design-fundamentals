@@ -41,8 +41,6 @@ module tb_pulse_crossing;
     endtask
 
     initial begin
-        $dumpfile("sim/pulse_crossing.vcd");
-        $dumpvars(0, tb_pulse_crossing);
 
         rst_n = 1'b0;
         fast_pulse = 1'b0;

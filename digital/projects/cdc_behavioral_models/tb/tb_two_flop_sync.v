@@ -17,8 +17,6 @@ module tb_two_flop_sync;
     always #5 clk_dst = ~clk_dst;
 
     initial begin
-        $dumpfile("sim/two_flop_sync.vcd");
-        $dumpvars(0, tb_two_flop_sync);
 
         rst_n = 1'b0;
         async_in = 1'b0;

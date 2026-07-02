@@ -28,8 +28,6 @@ module tb_bad_bus_sync;
     end
 
     initial begin
-        $dumpfile("sim/bad_bus_sync.vcd");
-        $dumpvars(0, tb_bad_bus_sync);
 
         rst_n = 1'b0;
         #22 rst_n = 1'b1;
