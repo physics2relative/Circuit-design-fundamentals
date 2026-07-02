@@ -10,8 +10,9 @@
 6. state encoding 선택
 7. next-state logic 작성
 8. output logic 작성
-9. illegal state 처리
-10. transition coverage 확인
+9. output을 combinational로 둘지 registered로 둘지 결정
+10. illegal state 처리
+11. transition coverage 확인
 
 ## 검증 포인트
 
@@ -22,6 +23,8 @@
 - 동시에 들어오는 input condition
 - state가 stuck되지 않는지 여부
 - one-cycle pulse output의 길이
+- registered output의 assert/deassert cycle
+- state, data, control signal의 cycle alignment
 
 ## 정리
 
