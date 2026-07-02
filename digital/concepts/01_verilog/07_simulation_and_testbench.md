@@ -2,7 +2,7 @@
 
 ## 핵심 관점
 
-Testbench는 RTL을 검증하기 위한 simulation 환경입니다. 합성 대상 RTL과 다르게 delay, display task, waveform dump 같은 simulation 전용 문법을 사용할 수 있습니다.
+Testbench는 RTL을 검증하기 위한 simulation 환경이다. 합성 대상 RTL과 다르게 delay, display task, waveform dump 같은 simulation 전용 문법을 사용할 수 있다.
 
 ## 기본 구조
 
@@ -37,9 +37,9 @@ endmodule
 
 ## DUT
 
-DUT는 Design Under Test의 약자입니다. testbench는 DUT에 clock, reset, input stimulus를 넣고 output을 확인합니다.
+DUT는 Design Under Test의 약자이다. testbench는 DUT에 clock, reset, input stimulus를 넣고 output을 확인한다.
 
-## 확인해야 할 것
+## 확인 항목
 
 - reset 직후 상태
 - 정상 입력 sequence
@@ -50,7 +50,7 @@ DUT는 Design Under Test의 약자입니다. testbench는 DUT에 clock, reset, i
 
 ## Waveform vs Self-checking
 
-Waveform 확인은 디버깅에 유용하지만, 모든 case를 눈으로 확인하기 어렵습니다. 가능한 경우 expected output을 testbench에서 비교하는 self-checking 구조가 좋습니다.
+Waveform 확인은 디버깅에 유용하지만 모든 case를 눈으로 확인하기 어렵다. 가능한 경우 expected output을 testbench에서 비교하는 self-checking 구조가 좋다.
 
 ```verilog
 if (count !== expected_count) begin
@@ -60,7 +60,7 @@ end
 
 ## Testbench 전용 문법
 
-일반적으로 다음은 testbench에서 사용합니다.
+일반적으로 다음은 testbench에서 사용한다.
 
 - `#delay`
 - `$display`
@@ -69,16 +69,6 @@ end
 - waveform dump task
 - file I/O
 
-## 면접 질문
+## 정리
 
-### Q. Testbench의 목적은?
-
-면접 답변:
-
-> Testbench는 DUT가 specification대로 동작하는지 simulation으로 검증하기 위한 환경입니다. clock/reset을 만들고, stimulus를 넣고, output을 expected behavior와 비교합니다. 단순히 waveform을 보는 것보다 corner case와 self-checking을 포함하는 것이 좋습니다.
-
-### Q. Testbench 코드는 합성되는가?
-
-면접 답변:
-
-> 일반적으로 testbench는 합성 대상이 아닙니다. delay, display task, file I/O 같은 simulation 전용 문법을 사용할 수 있고, 실제 hardware로 만들 RTL과는 구분해야 합니다.
+Testbench는 DUT가 specification대로 동작하는지 검증하는 환경이다. 단순 waveform 확인보다 expected behavior를 비교하는 구조가 더 견고하다. Testbench 코드는 일반적으로 합성 대상이 아니다.

@@ -2,7 +2,7 @@
 
 ## 핵심 관점
 
-`always` block은 Verilog RTL의 의도를 가장 직접적으로 드러냅니다. 중요한 것은 block을 **조합논리용**과 **순차논리용**으로 명확히 나누는 것입니다.
+`always` block은 Verilog RTL의 의도를 가장 직접적으로 드러낸다. 중요한 것은 block을 **조합논리용**과 **순차논리용**으로 명확히 나누는 것이다.
 
 ## Combinational pattern
 
@@ -20,7 +20,7 @@ always @(*) begin
 end
 ```
 
-핵심:
+핵심은 다음과 같다.
 
 - `always @(*)` 사용
 - blocking assignment 사용
@@ -35,7 +35,7 @@ always @(posedge clk) begin
 end
 ```
 
-핵심:
+핵심은 다음과 같다.
 
 - clock edge 기준 update
 - non-blocking assignment 사용
@@ -54,7 +54,7 @@ end
 
 ## Next-state / state-register split
 
-FSM이나 복잡한 control logic은 보통 next-state 조합논리와 state register를 분리합니다.
+FSM이나 복잡한 control logic은 보통 next-state 조합논리와 state register를 분리한다.
 
 ```verilog
 always @(*) begin
@@ -83,18 +83,8 @@ always @(posedge clk or negedge rst_n) begin
 end
 ```
 
-FSM 자체의 설계법은 `../04_fsm/`에서 다루고, 여기서는 Verilog 표현 패턴만 정리합니다.
+FSM 자체의 설계법은 `../04_fsm/`에서 다루고, 여기서는 Verilog 표현 패턴만 정리한다.
 
-## 면접 질문
+## 정리
 
-### Q. `always @(*)`를 쓰는 이유는?
-
-면접 답변:
-
-> 조합논리 block의 sensitivity list를 자동으로 구성하기 위해 사용합니다. 직접 sensitivity list를 작성하다가 입력 신호를 빠뜨리면 simulation behavior와 의도한 조합논리가 달라질 수 있습니다.
-
-### Q. 조합 always block에서 default assignment를 넣는 이유는?
-
-면접 답변:
-
-> 모든 path에서 output이 결정되도록 하기 위해서입니다. 일부 조건에서 값이 assign되지 않으면 이전 값을 유지해야 하는 것으로 해석되어 unintended latch가 생길 수 있습니다.
+`always @(*)` block은 값이 유지되지 않도록 모든 path를 assign해야 한다. `always @(posedge clk)` block은 clock edge에서 state가 update되는 구조로 해석해야 한다. 두 block의 역할을 섞지 않는 것이 기본이다.
