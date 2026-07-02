@@ -83,7 +83,7 @@ always @(posedge clk or negedge rst_n) begin
 end
 ```
 
-FSM 자체의 설계법은 `../04_fsm/`에서 다루고, 여기서는 Verilog 표현 패턴만 정리한다.
+FSM 자체의 설계법은 `../05_fsm/`에서 다루고, 여기서는 Verilog 표현 패턴만 정리한다.
 
 ## 정리
 

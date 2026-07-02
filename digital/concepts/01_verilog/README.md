@@ -15,11 +15,11 @@ Verilog로 어떻게 표현하는가?
 회로 이론 자체는 다른 concept 폴더에서 다룬다.
 
 ```text
-조합논리 이론       → ../02_combinational_logic/
-순차논리 이론       → ../03_sequential_logic/
-FSM 설계법          → ../04_fsm/
-setup/hold, CDC     → ../05_timing_cdc/
-FIFO/arbiter 등     → ../07_rtl_interview_study_guide/
+조합논리 이론       → ../03_combinational_logic/
+순차논리 이론       → ../04_sequential_logic/
+FSM 설계법          → ../05_fsm/
+setup/hold, CDC     → ../06_timing_sta/, ../07_clock_reset_cdc/
+FIFO/interface 등   → ../09_memory_fifo_interface/
 ```
 
 ## Contents

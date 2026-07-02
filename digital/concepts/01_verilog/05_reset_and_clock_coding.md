@@ -72,7 +72,7 @@ end
 - 큰 datapath register는 reset tree 부담을 줄이기 위해 reset하지 않고 valid bit로 관리할 수 있다.
 - reset 정책은 design style, target, verification strategy에 따라 결정한다.
 
-깊은 reset timing, recovery/removal, CDC reset release 문제는 `../05_timing_cdc/`에서 다룬다.
+깊은 reset timing, recovery/removal, CDC reset release 문제는 `../07_clock_reset_cdc/`에서 다룬다.
 
 ## 정리
 
