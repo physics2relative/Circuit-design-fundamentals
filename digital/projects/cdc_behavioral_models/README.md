@@ -1,6 +1,6 @@
 # CDC Behavioral Models
 
-CDC(clock domain crossing) 개념을 Verilog behavioral model로 확인하기 위한 작은 simulation project이다.
+CDC(clock domain crossing) 개념을 Verilog behavioral model로 확인하기 위한 Xcelium `xrun` 기반 simulation project이다.
 
 ## 목표
 
@@ -26,7 +26,7 @@ tb/
   tb_bad_bus_sync.v
 
 sim/
-  run_iverilog.sh
+  run_xrun.sh
 ```
 
 ## 실행
@@ -35,10 +35,19 @@ EDA 서버 기준:
 
 ```bash
 cd /user/choi.jw/PROJECT/Circuit-Design-Fundamentals/digital/projects/cdc_behavioral_models
-bash sim/run_iverilog.sh
+bash sim/run_xrun.sh
 ```
 
-로컬에 `iverilog`가 있으면 로컬에서도 동일하게 실행할 수 있다.
+`xrun`이 PATH에 없으면 Xcelium binary 경로를 `XRUN` 환경변수로 지정한다.
+
+```bash
+XRUN=/tools/cadence/Xcelium2203.002/bin/xrun bash sim/run_xrun.sh
+```
+
+## 출력물
+
+- compile/run log: `sim/xrun_work/<tb_name>/xrun.log`
+- waveform dump: `sim/*.vcd`
 
 ## 중요한 한계
 
