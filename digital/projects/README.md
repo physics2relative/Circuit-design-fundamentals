@@ -19,3 +19,5 @@ RTL 프로젝트를 정리합니다.
 ## Projects
 
 - [Digital Counter](./digital_counter/README.md)
+
+- [CDC Behavioral Models](./cdc_behavioral_models/README.md)
