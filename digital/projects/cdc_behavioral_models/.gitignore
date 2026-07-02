@@ -1,0 +1,9 @@
+# Xcelium/xrun generated files
+sim/xrun_work/
+sim/*.vcd
+sim/*.log
+xrun.*
+xcelium.d/
+*.history
+*.key
+*.diag
