@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_no_sync_capture_xmodel;
+module tb_01_no_sync_capture_xmodel;
     reg clk_dst;
     reg rst_n;
     reg async_in;
@@ -27,10 +27,10 @@ module tb_no_sync_capture_xmodel;
         #21 async_in = 1'b1;  // 1 ns before clk posedge at 45 ns: setup violation
         #12 async_in = 1'b0;  // 1 ns after clk posedge at 55 ns: hold violation
         #18 async_in = 1'b1;  // 1 ns before clk posedge at 75 ns: setup violation
-        #21 async_in = 1'b0;
+        #21 async_in = 1'b0;  // same time as clk posedge at 95 ns: edge-aligned stress
         #50;
 
-        $display("TB no_sync_capture_xmodel done. Setup/hold window violations inject X.");
+        $display("01 no_sync_capture_xmodel done. Direct async capture exposes X on setup/hold stress.");
         $finish;
     end
 endmodule

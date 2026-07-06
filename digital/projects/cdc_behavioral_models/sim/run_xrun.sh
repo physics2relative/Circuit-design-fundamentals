@@ -7,6 +7,7 @@ cd "$ROOT"
 XRUN_BIN="${XRUN:-xrun}"
 RUN_DIR="$ROOT/sim/xrun_work"
 WAVE_TCL="$ROOT/sim/xrun_shm.tcl"
+rm -rf "$RUN_DIR"
 mkdir -p "$RUN_DIR"
 
 run_tb() {
@@ -37,13 +38,11 @@ run_tb() {
   )
 }
 
-run_tb no_sync_capture        rtl/no_sync_capture.v        tb/tb_no_sync_capture.v
-run_tb no_sync_capture_xmodel rtl/x_inject_dff.v rtl/no_sync_capture_xmodel.v tb/tb_no_sync_capture_xmodel.v
-run_tb two_flop_sync         rtl/two_flop_sync.v         tb/tb_two_flop_sync.v
-run_tb two_flop_sync_xmodel  rtl/x_inject_dff.v rtl/two_flop_sync_xmodel.v tb/tb_two_flop_sync_xmodel.v
-run_tb pulse_crossing rtl/two_flop_sync.v  tb/tb_pulse_crossing.v
-run_tb toggle_sync    rtl/toggle_sync.v    tb/tb_toggle_sync.v
-run_tb bad_bus_sync   rtl/bad_bus_sync.v   tb/tb_bad_bus_sync.v
+run_tb 01_no_sync_capture_xmodel rtl/x_inject_dff.v rtl/no_sync_capture_xmodel.v tb/01_tb_no_sync_capture_xmodel.v
+run_tb 02_two_flop_sync_xmodel  rtl/x_inject_dff.v rtl/two_flop_sync_xmodel.v  tb/02_tb_two_flop_sync_xmodel.v
+run_tb 03_pulse_crossing_xmodel rtl/x_inject_dff.v rtl/two_flop_sync_xmodel.v  tb/03_tb_pulse_crossing_xmodel.v
+run_tb 04_toggle_sync_xmodel    rtl/x_inject_dff.v rtl/toggle_sync_xmodel.v    tb/04_tb_toggle_sync_xmodel.v
+run_tb 05_bad_bus_sync_xmodel   rtl/x_inject_dff.v rtl/bad_bus_sync_xmodel.v   tb/05_tb_bad_bus_sync_xmodel.v
 
-echo "All CDC behavioral simulations completed with xrun."
-echo "Logs and SHM waveforms are under sim/xrun_work/<tb_name>/."
+echo "All CDC xmodel simulations completed with xrun."
+echo "Logs and SHM waveforms are under sim/xrun_work/<numbered_tb_name>/."

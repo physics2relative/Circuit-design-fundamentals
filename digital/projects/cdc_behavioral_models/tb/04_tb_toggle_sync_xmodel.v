@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_toggle_sync;
+module tb_04_toggle_sync_xmodel;
     reg clk_fast;
     reg clk_slow;
     reg rst_fast_n;
@@ -10,7 +10,10 @@ module tb_toggle_sync;
     integer sent_count;
     integer seen_count;
 
-    toggle_sync u_toggle_sync (
+    toggle_sync_xmodel #(
+        .SETUP_NS (1.0),
+        .HOLD_NS  (1.0)
+    ) u_toggle_sync_xmodel (
         .clk_src   (clk_fast),
         .rst_src_n (rst_fast_n),
         .src_pulse (fast_pulse),
@@ -26,22 +29,11 @@ module tb_toggle_sync;
     always #10 clk_slow = ~clk_slow;
 
     always @(posedge clk_slow) begin
-        if (slow_pulse)
+        if (slow_pulse === 1'b1)
             seen_count <= seen_count + 1;
     end
 
-    task send_fast_pulse;
-        begin
-            @(posedge clk_fast);
-            fast_pulse <= 1'b1;
-            sent_count <= sent_count + 1;
-            @(posedge clk_fast);
-            fast_pulse <= 1'b0;
-        end
-    endtask
-
     initial begin
-
         rst_fast_n = 1'b0;
         rst_slow_n = 1'b0;
         fast_pulse = 1'b0;
@@ -51,13 +43,15 @@ module tb_toggle_sync;
         rst_fast_n = 1'b1;
         rst_slow_n = 1'b1;
 
-        #7  send_fast_pulse();
-        #40 send_fast_pulse();
-        #44 send_fast_pulse();
-        #60 send_fast_pulse();
-        #120;
+        #24 fast_pulse = 1'b1; sent_count = sent_count + 1; // src_toggle changes at fast posedge 51 ns, 1 ns after slow edge
+        #4  fast_pulse = 1'b0;
+        #14 fast_pulse = 1'b1; sent_count = sent_count + 1; // src_toggle changes at fast posedge 69 ns, 1 ns before slow edge
+        #4  fast_pulse = 1'b0;
+        #80 fast_pulse = 1'b1; sent_count = sent_count + 1; // src_toggle changes at fast posedge 153 ns, away from slow edge
+        #4  fast_pulse = 1'b0;
+        #180;
 
-        $display("TB toggle_sync done. sent=%0d seen=%0d", sent_count, seen_count);
+        $display("04 toggle_sync_xmodel done. sent=%0d seen=%0d", sent_count, seen_count);
         $finish;
     end
 endmodule

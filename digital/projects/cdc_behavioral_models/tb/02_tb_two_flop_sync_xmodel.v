@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_two_flop_sync_xmodel;
+module tb_02_two_flop_sync_xmodel;
     reg clk_dst;
     reg rst_n;
     reg async_in;
@@ -27,10 +27,10 @@ module tb_two_flop_sync_xmodel;
         #21 async_in = 1'b1;  // 1 ns before clk posedge at 45 ns: setup violation on first stage
         #12 async_in = 1'b0;  // 1 ns after clk posedge at 55 ns: hold violation on first stage
         #18 async_in = 1'b1;  // 1 ns before clk posedge at 75 ns: setup violation on first stage
-        #21 async_in = 1'b0;
+        #21 async_in = 1'b0;  // same time as clk posedge at 95 ns: edge-aligned stress
         #70;
 
-        $display("TB two_flop_sync_xmodel done. First-stage uncertainty is isolated by synchronizer latency.");
+        $display("02 two_flop_sync_xmodel done. First-stage X is observed through synchronizer latency.");
         $finish;
     end
 endmodule
