@@ -42,7 +42,7 @@ sim/
 
 ## 실습 흐름
 
-1. `no_sync_capture_xmodel`은 synchronizer 없이 asynchronous input을 destination flip-flop 하나로 바로 capture한다. setup/hold window 안에서 입력이 변하면 output에 `X`가 주입된다.
+1. `no_sync_capture_xmodel`은 다른 clock domain에서 온 `async_in`을 destination flip-flop 하나로 바로 capture한다. `clk_src`는 waveform에서 source domain의 존재를 보여주는 reference clock이고, `async_in` transition은 `clk_dst` setup/hold window를 명확히 stress하도록 직접 scheduling한다. setup/hold window 안에서 입력이 변하면 output에 `X`가 주입된다.
 2. `two_flop_sync_xmodel`은 첫 번째 stage에 setup/hold X-injection FF를 사용한다. first-stage uncertainty와 synchronizer latency를 함께 관찰한다.
 3. `pulse_crossing_xmodel`은 fast-to-slow pulse가 slow clock에 의해 miss될 수 있고, edge 근처에서 sampling되면 first stage가 불확정해질 수 있음을 보인다.
 4. `toggle_sync_xmodel`은 pulse event를 source domain의 toggle state change로 바꾸어 destination domain에서 event를 복원하는 구조이다.
