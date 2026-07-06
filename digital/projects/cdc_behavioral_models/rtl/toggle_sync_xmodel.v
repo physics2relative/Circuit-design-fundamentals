@@ -15,15 +15,26 @@ module toggle_sync_xmodel #(
     output wire dst_pulse
 );
     reg  src_toggle;
+    wire src_toggle_hold;
+    wire src_toggle_flip;
+    wire src_toggle_next;
     wire dst_sync_1;
     reg  dst_sync_2;
     reg  dst_sync_3;
 
+    // Explicit 2:1 mux form for the source-domain toggle register.
+    // Functionally this is equivalent to: src_toggle_next = src_toggle ^ src_pulse.
+    // Keeping the mux expression here makes the toggle hardware easier to inspect
+    // in RTL schematic viewers.
+    assign src_toggle_hold = src_toggle;
+    assign src_toggle_flip = ~src_toggle;
+    assign src_toggle_next = src_pulse ? src_toggle_flip : src_toggle_hold;
+
     always @(posedge clk_src or negedge rst_src_n) begin
         if (!rst_src_n)
             src_toggle <= 1'b0;
-        else if (src_pulse)
-            src_toggle <= ~src_toggle;
+        else
+            src_toggle <= src_toggle_next;
     end
 
     x_inject_dff #(
