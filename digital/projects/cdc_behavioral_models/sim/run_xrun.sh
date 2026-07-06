@@ -37,7 +37,8 @@ run_tb() {
   )
 }
 
-run_tb two_flop_sync  rtl/two_flop_sync.v  tb/tb_two_flop_sync.v
+run_tb no_sync_capture rtl/no_sync_capture.v tb/tb_no_sync_capture.v
+run_tb two_flop_sync   rtl/two_flop_sync.v  tb/tb_two_flop_sync.v
 run_tb pulse_crossing rtl/two_flop_sync.v  tb/tb_pulse_crossing.v
 run_tb toggle_sync    rtl/toggle_sync.v    tb/tb_toggle_sync.v
 run_tb bad_bus_sync   rtl/bad_bus_sync.v   tb/tb_bad_bus_sync.v
