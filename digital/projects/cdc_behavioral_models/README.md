@@ -65,13 +65,12 @@ XRUN=/tools/cadence/Xcelium2203.002/bin/xrun bash sim/run_xrun.sh
 
 ## 출력물
 
-- compile/run log: `sim/xrun_work/<run_id>/<numbered_tb_name>/xrun.log`
-- waveform database: `sim/xrun_work/<run_id>/<numbered_tb_name>/waves.shm`
-- latest run symlink: `sim/xrun_work/latest`
+- compile/run log: `sim/xrun_work/<numbered_tb_name>/xrun.log`
+- waveform database: `sim/xrun_work/<numbered_tb_name>/waves.shm`
 
 ## SimVision 사용 시 주의
 
-`run_xrun.sh`는 실행할 때마다 timestamp 기반 새 run directory를 만든다. 이미 SimVision에서 열어둔 `waves.shm` directory를 삭제하거나 덮어쓰지 않기 위해서이다. 새 결과는 `sim/xrun_work/latest/<numbered_tb_name>/waves.shm` 또는 출력에 표시되는 `Run output` 경로에서 열면 된다.
+`run_xrun.sh`는 기존 `sim/xrun_work/<numbered_tb_name>/waves.shm`을 매번 덮어쓴다. 같은 SHM을 SimVision에서 열어둔 상태로 다시 run하면 diagnostics가 뜨거나 reload가 꼬일 수 있으므로, 재실행 전에는 해당 SimVision 창을 닫는 것이 안전하다.
 
 ## 중요한 한계
 
