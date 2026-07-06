@@ -6,6 +6,7 @@ module tb_01_no_sync_capture_xmodel;
     reg rst_n;
     reg async_in;
     wire captured_out;
+    integer src_cycle_count;
 
     no_sync_capture_xmodel #(
         .SETUP_NS (1.0),
@@ -18,26 +19,34 @@ module tb_01_no_sync_capture_xmodel;
     );
 
     initial clk_src = 1'b0;
-    always #7 clk_src = ~clk_src;  // reference source-domain clock for waveform context
+    always #6 clk_src = ~clk_src;  // source-domain clock, period = 12 ns
 
     initial clk_dst = 1'b0;
-    always #5 clk_dst = ~clk_dst;
+    always #5 clk_dst = ~clk_dst;  // destination-domain clock, period = 10 ns
+
+    always @(posedge clk_src or negedge rst_n) begin
+        if (!rst_n) begin
+            async_in <= 1'b0;
+            src_cycle_count <= 0;
+        end else begin
+            src_cycle_count <= src_cycle_count + 1;
+
+            // async_in is launched by clk_src. Since clk_src and clk_dst are
+            // unrelated, some src launches naturally fall inside the clk_dst
+            // setup/hold stress window.
+            async_in <= ~async_in;
+        end
+    end
 
     initial begin
         rst_n = 1'b0;
         async_in = 1'b0;
+        src_cycle_count = 0;
         #23 rst_n = 1'b1;
 
-        // async_in represents a signal launched from another clock domain.
-        // clk_src is shown as source-domain context, while these transitions are
-        // scheduled explicitly to stress clk_dst setup/hold windows.
-        #21 async_in = 1'b1;  // 1 ns before clk_dst posedge at 45 ns: setup violation
-        #12 async_in = 1'b0;  // 1 ns after clk_dst posedge at 55 ns: hold violation
-        #18 async_in = 1'b1;  // 1 ns before clk_dst posedge at 75 ns: setup violation
-        #21 async_in = 1'b0;  // same time as clk_dst posedge at 95 ns: edge-aligned stress
-        #50;
+        #120;
 
-        $display("01 no_sync_capture_xmodel done. Direct async capture exposes X on setup/hold stress.");
+        $display("01 no_sync_capture_xmodel done. clk_src-launched async_in is captured directly by clk_dst.");
         $finish;
     end
 endmodule

@@ -42,7 +42,7 @@ sim/
 
 ## 실습 흐름
 
-1. `no_sync_capture_xmodel`은 다른 clock domain에서 온 `async_in`을 destination flip-flop 하나로 바로 capture한다. `clk_src`는 waveform에서 source domain의 존재를 보여주는 reference clock이고, `async_in` transition은 `clk_dst` setup/hold window를 명확히 stress하도록 직접 scheduling한다. setup/hold window 안에서 입력이 변하면 output에 `X`가 주입된다.
+1. `no_sync_capture_xmodel`은 `clk_src` domain에서 launch된 `async_in`을 destination flip-flop 하나로 바로 capture한다. `clk_src`와 `clk_dst`의 관계가 보장되지 않기 때문에 일부 source launch edge가 destination setup/hold window 근처에 걸리고, 이때 output에 `X`가 주입된다.
 2. `two_flop_sync_xmodel`은 첫 번째 stage에 setup/hold X-injection FF를 사용한다. first-stage uncertainty와 synchronizer latency를 함께 관찰한다.
 3. `pulse_crossing_xmodel`은 fast-to-slow pulse가 slow clock에 의해 miss될 수 있고, edge 근처에서 sampling되면 first stage가 불확정해질 수 있음을 보인다.
 4. `toggle_sync_xmodel`은 pulse event를 source domain의 toggle state change로 바꾸어 destination domain에서 event를 복원하는 구조이다.
@@ -65,8 +65,13 @@ XRUN=/tools/cadence/Xcelium2203.002/bin/xrun bash sim/run_xrun.sh
 
 ## 출력물
 
-- compile/run log: `sim/xrun_work/<numbered_tb_name>/xrun.log`
-- waveform database: `sim/xrun_work/<numbered_tb_name>/waves.shm`
+- compile/run log: `sim/xrun_work/<run_id>/<numbered_tb_name>/xrun.log`
+- waveform database: `sim/xrun_work/<run_id>/<numbered_tb_name>/waves.shm`
+- latest run symlink: `sim/xrun_work/latest`
+
+## SimVision 사용 시 주의
+
+`run_xrun.sh`는 실행할 때마다 timestamp 기반 새 run directory를 만든다. 이미 SimVision에서 열어둔 `waves.shm` directory를 삭제하거나 덮어쓰지 않기 위해서이다. 새 결과는 `sim/xrun_work/latest/<numbered_tb_name>/waves.shm` 또는 출력에 표시되는 `Run output` 경로에서 열면 된다.
 
 ## 중요한 한계
 
