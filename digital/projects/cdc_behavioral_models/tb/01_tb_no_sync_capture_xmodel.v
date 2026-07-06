@@ -9,8 +9,10 @@ module tb_01_no_sync_capture_xmodel;
     integer src_cycle_count;
 
     no_sync_capture_xmodel #(
-        .SETUP_NS (1.0),
-        .HOLD_NS  (1.0)
+        .SETUP_NS         (1.0),
+        .HOLD_NS          (1.0),
+        .RESOLVE_DELAY_NS (2.0),
+        .RESOLVE_VALUE    (1'b1)
     ) u_no_sync_capture_xmodel (
         .clk_dst      (clk_dst),
         .rst_n        (rst_n),
@@ -19,10 +21,10 @@ module tb_01_no_sync_capture_xmodel;
     );
 
     initial clk_src = 1'b0;
-    always #6 clk_src = ~clk_src;  // source-domain clock, period = 12 ns
+    always #6 clk_src = ~clk_src;
 
     initial clk_dst = 1'b0;
-    always #5 clk_dst = ~clk_dst;  // destination-domain clock, period = 10 ns
+    always #5 clk_dst = ~clk_dst;
 
     always @(posedge clk_src or negedge rst_n) begin
         if (!rst_n) begin
@@ -30,10 +32,6 @@ module tb_01_no_sync_capture_xmodel;
             src_cycle_count <= 0;
         end else begin
             src_cycle_count <= src_cycle_count + 1;
-
-            // async_in is launched by clk_src. Since clk_src and clk_dst are
-            // unrelated, some src launches naturally fall inside the clk_dst
-            // setup/hold stress window.
             async_in <= ~async_in;
         end
     end
@@ -43,10 +41,9 @@ module tb_01_no_sync_capture_xmodel;
         async_in = 1'b0;
         src_cycle_count = 0;
         #23 rst_n = 1'b1;
-
         #120;
 
-        $display("01 no_sync_capture_xmodel done. clk_src-launched async_in is captured directly by clk_dst.");
+        $display("01 no_sync_capture_xmodel done. Direct receiver FF shows temporary X then deterministic resolve.");
         $finish;
     end
 endmodule

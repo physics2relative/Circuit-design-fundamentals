@@ -3,7 +3,9 @@
 module bad_bus_sync_xmodel #(
     parameter WIDTH = 4,
     parameter real SETUP_NS = 1.0,
-    parameter real HOLD_NS  = 1.0
+    parameter real HOLD_NS  = 1.0,
+    parameter real RESOLVE_DELAY_NS = 2.0,
+    parameter      RESOLVE_VALUE = 1'b1
 )(
     input  wire             clk_dst,
     input  wire             rst_n,
@@ -17,8 +19,10 @@ module bad_bus_sync_xmodel #(
     generate
         for (i = 0; i < WIDTH; i = i + 1) begin : g_bit_sync
             x_inject_dff #(
-                .SETUP_NS (SETUP_NS),
-                .HOLD_NS  (HOLD_NS)
+                .SETUP_NS         (SETUP_NS),
+                .HOLD_NS          (HOLD_NS),
+                .RESOLVE_DELAY_NS (RESOLVE_DELAY_NS),
+                .RESOLVE_VALUE    (RESOLVE_VALUE)
             ) u_first_stage_ff (
                 .clk   (clk_dst),
                 .rst_n (rst_n),

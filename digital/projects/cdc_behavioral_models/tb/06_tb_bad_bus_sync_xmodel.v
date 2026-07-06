@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_05_bad_bus_sync_xmodel;
+module tb_06_bad_bus_sync_xmodel;
     reg clk_dst;
     reg rst_n;
     reg [3:0] src_bus;
@@ -31,7 +31,7 @@ module tb_05_bad_bus_sync_xmodel;
         #21 src_bus = 4'b1000; // same time as clk posedge at 95 ns: edge-aligned multi-bit stress
         #80;
 
-        $display("05 bad_bus_sync_xmodel done. Bitwise sync of multi-bit bus exposes incoherent/X-prone data.");
+        $display("06 bad_bus_sync_xmodel done. Bitwise sync of multi-bit bus exposes incoherent/X-prone data.");
         $finish;
     end
 endmodule

@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_04_toggle_sync_xmodel;
+module tb_05_toggle_sync_xmodel;
     reg clk_fast;
     reg clk_slow;
     reg rst_fast_n;
@@ -51,7 +51,7 @@ module tb_04_toggle_sync_xmodel;
         #4  fast_pulse = 1'b0;
         #180;
 
-        $display("04 toggle_sync_xmodel done. sent=%0d seen=%0d", sent_count, seen_count);
+        $display("05 toggle_sync_xmodel done. sent=%0d seen=%0d", sent_count, seen_count);
         $finish;
     end
 endmodule

@@ -30,10 +30,11 @@ rtl/
 
 tb/
   01_tb_no_sync_capture_xmodel.v
-  02_tb_two_flop_sync_xmodel.v
-  03_tb_pulse_crossing_xmodel.v
-  04_tb_toggle_sync_xmodel.v
-  05_tb_bad_bus_sync_xmodel.v
+  02_tb_two_flop_sync_resolved_xmodel.v
+  03_tb_two_flop_sync_unresolved_xmodel.v
+  04_tb_pulse_crossing_xmodel.v
+  05_tb_toggle_sync_xmodel.v
+  06_tb_bad_bus_sync_xmodel.v
 
 sim/
   run_xrun.sh
@@ -42,11 +43,12 @@ sim/
 
 ## 실습 흐름
 
-1. `no_sync_capture_xmodel`은 `clk_src` domain에서 launch된 `async_in`을 destination flip-flop 하나로 바로 capture한다. `clk_src`와 `clk_dst`의 관계가 보장되지 않기 때문에 일부 source launch edge가 destination setup/hold window 근처에 걸리고, 이때 output에 `X`가 주입된다.
-2. `two_flop_sync_xmodel`은 첫 번째 stage에 setup/hold X-injection FF를 사용한다. first-stage uncertainty와 synchronizer latency를 함께 관찰한다.
-3. `pulse_crossing_xmodel`은 fast-to-slow pulse가 slow clock에 의해 miss될 수 있고, edge 근처에서 sampling되면 first stage가 불확정해질 수 있음을 보인다.
-4. `toggle_sync_xmodel`은 pulse event를 source domain의 toggle state change로 바꾸어 destination domain에서 event를 복원하는 구조이다.
-5. `bad_bus_sync_xmodel`은 multi-bit bus를 bit별 synchronizer로 넘기는 구조가 data coherency 측면에서 unsafe함을 보인다.
+1. `no_sync_capture_xmodel`은 `clk_src` domain에서 launch된 `async_in`을 destination flip-flop 하나로 바로 capture한다. `clk_src`와 `clk_dst`의 관계가 보장되지 않기 때문에 일부 source launch edge가 destination setup/hold window 근처에 걸리고, 이때 output이 잠깐 `X`가 된 뒤 deterministic value로 resolve된다.
+2. `two_flop_sync_resolved_xmodel`은 첫 번째 stage가 setup/hold violation으로 잠깐 `X`가 되지만 다음 destination clock edge 전에 resolve되는 경우이다. second stage는 resolved value를 sampling하므로 2-FF synchronizer가 효과적으로 동작한다.
+3. `two_flop_sync_unresolved_xmodel`은 첫 번째 stage의 resolve delay를 destination clock period보다 길게 둔 rare failure case이다. second stage가 아직 `X`인 first-stage output을 sampling할 수 있음을 보인다.
+4. `pulse_crossing_xmodel`은 fast-to-slow pulse가 slow clock에 의해 miss될 수 있고, edge 근처에서 sampling되면 first stage가 불확정해질 수 있음을 보인다.
+5. `toggle_sync_xmodel`은 pulse event를 source domain의 toggle state change로 바꾸어 destination domain에서 event를 복원하는 구조이다.
+6. `bad_bus_sync_xmodel`은 multi-bit bus를 bit별 synchronizer로 넘기는 구조가 data coherency 측면에서 unsafe함을 보인다.
 
 ## 실행
 
@@ -70,8 +72,8 @@ XRUN=/tools/cadence/Xcelium2203.002/bin/xrun bash sim/run_xrun.sh
 
 ## SimVision 사용 시 주의
 
-`run_xrun.sh`는 기존 `sim/xrun_work/<numbered_tb_name>/waves.shm`을 매번 덮어쓴다. 같은 SHM을 SimVision에서 열어둔 상태로 다시 run하면 diagnostics가 뜨거나 reload가 꼬일 수 있으므로, 재실행 전에는 해당 SimVision 창을 닫는 것이 안전하다.
+`run_xrun.sh`는 기존 `sim/xrun_work/<numbered_tb_name>/waves.shm`을 매번 덮어쓴다. 같은 SHM을 SimVision에서 열어둔 상태로 다시 run하면 diagnostics가 뜨거나 reload가 꼬일 수 있으므로, 재실행 전에는 해당 SimVision 창을 닫는 것이 안전하다. 스크립트는 이 프로젝트의 SHM을 보고 있는 SimVision이 감지되면 기본적으로 중단한다.
 
 ## 중요한 한계
 
-`x_inject_dff`는 교육용으로 setup/hold window 위반 시 `X`를 주입하는 보수적 behavioral model이다. 실제 flip-flop의 metastability resolution time, failure probability, MTBF를 예측하는 모델은 아니다. 여기서의 `X`는 실제 중간 전압 자체가 아니라, 해당 timing에서 destination domain이 0/1 값을 확정할 수 없다는 표시로 해석해야 한다.
+`x_inject_dff`는 교육용으로 setup/hold window 위반 시 `X`를 주입한 뒤 `RESOLVE_DELAY_NS` 후 deterministic `RESOLVE_VALUE`로 resolve시키는 behavioral model이다. 실제 flip-flop의 metastability resolution time distribution, failure probability, MTBF를 예측하는 모델은 아니다. 여기서의 `X`는 실제 중간 전압 자체가 아니라, 해당 timing에서 destination domain이 0/1 값을 확정할 수 없다는 표시로 해석해야 한다.

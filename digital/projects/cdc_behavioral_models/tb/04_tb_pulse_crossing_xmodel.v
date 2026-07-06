@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_03_pulse_crossing_xmodel;
+module tb_04_pulse_crossing_xmodel;
     reg clk_slow;
     reg rst_n;
     reg fast_pulse;
@@ -43,7 +43,7 @@ module tb_03_pulse_crossing_xmodel;
         #2  fast_pulse = 1'b0;  // 71 ns: 1 ns after slow posedge at 70 ns
         #90;
 
-        $display("03 pulse_crossing_xmodel done. Fast pulse can be missed or sampled uncertainly.");
+        $display("04 pulse_crossing_xmodel done. Fast pulse can be missed or sampled uncertainly.");
         $finish;
     end
 endmodule
