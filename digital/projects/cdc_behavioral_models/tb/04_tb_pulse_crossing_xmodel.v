@@ -1,49 +1,64 @@
 `timescale 1ns/1ps
 
 module tb_04_pulse_crossing_xmodel;
-    reg clk_slow;
+    reg clk_src;
+    reg clk_dst;
     reg rst_n;
-    reg fast_pulse;
-    wire slow_level;
-    reg slow_level_d;
-    wire slow_pulse_seen;
+    reg src_pulse;
+    wire dst_level;
+    reg dst_level_d;
+    wire dst_pulse_seen;
+    integer sent_count;
 
     two_flop_sync_xmodel #(
-        .SETUP_NS (1.0),
-        .HOLD_NS  (1.0)
+        .SETUP_NS         (1.0),
+        .HOLD_NS          (1.0),
+        .RESOLVE_DELAY_NS (2.0),
+        .RESOLVE_VALUE    (1'b1)
     ) u_sync_xmodel (
-        .clk_dst  (clk_slow),
+        .clk_dst  (clk_dst),
         .rst_n    (rst_n),
-        .async_in (fast_pulse),
-        .sync_out (slow_level)
+        .async_in (src_pulse),
+        .sync_out (dst_level)
     );
 
-    initial clk_slow = 1'b0;
-    always #10 clk_slow = ~clk_slow;
+    initial clk_src = 1'b0;
+    always #3 clk_src = ~clk_src;   // source-domain fast clock, period = 6 ns
 
-    always @(posedge clk_slow or negedge rst_n) begin
+    initial clk_dst = 1'b0;
+    always #10 clk_dst = ~clk_dst;  // destination-domain slow clock, period = 20 ns
+
+    always @(posedge clk_dst or negedge rst_n) begin
         if (!rst_n)
-            slow_level_d <= 1'b0;
+            dst_level_d <= 1'b0;
         else
-            slow_level_d <= slow_level;
+            dst_level_d <= dst_level;
     end
 
-    assign slow_pulse_seen = slow_level & ~slow_level_d;
+    assign dst_pulse_seen = dst_level & ~dst_level_d;
+
+    task send_src_pulse;
+        begin
+            @(posedge clk_src);
+            src_pulse <= 1'b1;
+            sent_count = sent_count + 1;
+            @(posedge clk_src);
+            src_pulse <= 1'b0;
+        end
+    endtask
 
     initial begin
         rst_n = 1'b0;
-        fast_pulse = 1'b0;
+        src_pulse = 1'b0;
+        sent_count = 0;
         #25 rst_n = 1'b1;
 
-        #7  fast_pulse = 1'b1;  // 32 ns: short pulse between slow edges, can be missed
-        #6  fast_pulse = 1'b0;  // 38 ns
-        #11 fast_pulse = 1'b1;  // 49 ns: 1 ns before slow posedge at 50 ns
-        #7  fast_pulse = 1'b0;  // 56 ns
-        #13 fast_pulse = 1'b1;  // 69 ns: 1 ns before slow posedge at 70 ns
-        #2  fast_pulse = 1'b0;  // 71 ns: 1 ns after slow posedge at 70 ns
-        #90;
+        #7  send_src_pulse();  // clk_src 33-39 ns: one-cycle pulse between clk_dst edges, can be missed
+        #1  send_src_pulse();  // clk_src 45-51 ns: falling edge is 1 ns after clk_dst posedge at 50 ns
+        #13 send_src_pulse();  // clk_src 69-75 ns: rising edge is 1 ns before clk_dst posedge at 70 ns
+        #100;
 
-        $display("04 pulse_crossing_xmodel done. Fast pulse can be missed or sampled uncertainly.");
+        $display("04 pulse_crossing_xmodel done. src-domain one-cycle pulses sent=%0d", sent_count);
         $finish;
     end
 endmodule

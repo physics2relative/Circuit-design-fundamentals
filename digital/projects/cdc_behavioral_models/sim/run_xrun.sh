@@ -26,8 +26,10 @@ run_tb() {
   local files=()
 
   echo "== $name =="
-  rm -rf "$tb_dir"
   mkdir -p "$tb_dir"
+  # Keep tb_dir itself so an interactive shell with cwd there is not broken.
+  # Only remove per-run generated files/directories.
+  rm -rf "$tb_dir/xcelium.d" "$tb_dir/waves.shm" "$tb_dir/xrun.log"          "$tb_dir/xrun.history" "$tb_dir/xrun.key" "$tb_dir/xrun.diag"
 
   for f in "$@"; do
     files+=("$ROOT/$f")
