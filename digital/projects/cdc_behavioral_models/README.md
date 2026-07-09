@@ -48,7 +48,7 @@ sim/
 3. `two_flop_sync_unresolved_xmodel`은 첫 번째 stage의 resolve delay를 destination clock period보다 길게 둔 rare failure case이다. second stage가 아직 `X`인 first-stage output을 sampling할 수 있음을 보인다.
 4. `pulse_crossing_xmodel`은 `clk_src` domain에서 생성된 1-cycle event pulse를 `clk_dst` domain으로 그대로 넘기려는 상황이다. pulse가 destination clock edge 사이에서 끝나면 miss될 수 있고, edge 근처에 걸리면 first stage가 불확정해질 수 있음을 보인다.
 5. `toggle_sync_xmodel`은 pulse event를 source domain의 toggle state change로 바꾸어 destination domain에서 event를 복원하는 구조이다.
-6. `bad_bus_sync_xmodel`은 multi-bit bus를 bit별 synchronizer로 넘기는 구조가 data coherency 측면에서 unsafe함을 보인다.
+6. `bad_bus_sync_xmodel`은 `clk_src` domain에서 launch된 multi-bit bus를 `clk_dst` domain에서 bit별 synchronizer로 넘기는 구조이다. 각 bit가 독립적으로 sampling되므로 bus coherency 측면에서 unsafe함을 보인다.
 
 ## 실행
 
