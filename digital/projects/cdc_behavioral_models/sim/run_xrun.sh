@@ -55,6 +55,9 @@ run_tb 03_two_flop_sync_unresolved_xmodel rtl/x_inject_dff.v rtl/two_flop_sync_x
 run_tb 04_pulse_crossing_xmodel         rtl/x_inject_dff.v rtl/two_flop_sync_xmodel.v  tb/04_tb_pulse_crossing_xmodel.v
 run_tb 05_toggle_sync_xmodel            rtl/x_inject_dff.v rtl/toggle_sync_xmodel.v    tb/05_tb_toggle_sync_xmodel.v
 run_tb 06_bad_bus_sync_xmodel           rtl/x_inject_dff.v rtl/bad_bus_sync_xmodel.v   tb/06_tb_bad_bus_sync_xmodel.v
+run_tb 07_handshake_cdc_xmodel          rtl/x_inject_dff.v rtl/handshake_cdc_xmodel.v  tb/07_tb_handshake_cdc_xmodel.v
+run_tb 08_async_fifo_gray_xmodel        rtl/async_fifo_gray_xmodel.v tb/08_tb_async_fifo_gray_xmodel.v
+run_tb 09_reset_sync_rdc_xmodel         rtl/x_reset_dff.v rtl/reset_synchronizer.v rtl/reset_sync_rdc_xmodel.v tb/09_tb_reset_sync_rdc_xmodel.v
 
 echo "All CDC xmodel simulations completed with xrun."
 echo "Logs and SHM waveforms are under sim/xrun_work/<numbered_tb_name>/."

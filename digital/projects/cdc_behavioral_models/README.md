@@ -11,6 +11,9 @@ RTL simulation은 실제 metastability의 analog behavior를 정확히 재현하
 - fast-to-slow pulse crossing에서 pulse가 miss되거나 불확정하게 sampling될 수 있는 문제
 - toggle synchronizer를 이용한 pulse event 전달
 - multi-bit bus를 bit별 synchronizer로 넘길 때 coherent하지 않은 값이 보일 수 있는 문제
+- request/ack handshake를 이용한 event CDC flow control
+- asynchronous FIFO와 Gray pointer를 이용한 multi-bit data CDC
+- reset deassertion을 domain별로 synchronize해야 하는 RDC(reset domain crossing) 문제
 
 ## 구조
 
@@ -21,6 +24,11 @@ rtl/
   two_flop_sync_xmodel.v
   toggle_sync_xmodel.v
   bad_bus_sync_xmodel.v
+  handshake_cdc_xmodel.v
+  async_fifo_gray_xmodel.v
+  x_reset_dff.v
+  reset_synchronizer.v
+  reset_sync_rdc_xmodel.v
 
   # 비교/참고용 ideal RTL
   no_sync_capture.v
@@ -35,6 +43,9 @@ tb/
   04_tb_pulse_crossing_xmodel.v
   05_tb_toggle_sync_xmodel.v
   06_tb_bad_bus_sync_xmodel.v
+  07_tb_handshake_cdc_xmodel.v
+  08_tb_async_fifo_gray_xmodel.v
+  09_tb_reset_sync_rdc_xmodel.v
 
 sim/
   run_xrun.sh
@@ -49,6 +60,9 @@ sim/
 4. `pulse_crossing_xmodel`은 `clk_src` domain에서 생성된 1-cycle event pulse를 `clk_dst` domain으로 그대로 넘기려는 상황이다. pulse가 destination clock edge 사이에서 끝나면 miss될 수 있고, edge 근처에 걸리면 first stage가 불확정해질 수 있음을 보인다.
 5. `toggle_sync_xmodel`은 pulse event를 source domain의 toggle state change로 바꾸어 destination domain에서 event를 복원하는 구조이다.
 6. `bad_bus_sync_xmodel`은 `clk_src` domain에서 launch된 multi-bit bus를 `clk_dst` domain에서 bit별 synchronizer로 넘기는 구조이다. 각 bit가 독립적으로 sampling되므로 bus coherency 측면에서 unsafe함을 보인다.
+7. `handshake_cdc_xmodel`은 source request를 level로 유지하고 destination acknowledge가 돌아올 때까지 busy를 유지하는 request/ack CDC 구조이다. 빠른 event를 무조건 넘기지 않고 accepted event만 destination pulse로 전달한다.
+8. `async_fifo_gray_xmodel`은 multi-bit data를 직접 synchronizer로 넘기지 않고 dual-clock FIFO memory에 저장하며, write/read pointer를 Gray code로 바꿔 상대 clock domain에 동기화한다.
+9. `reset_sync_rdc_xmodel`은 global asynchronous reset을 FF에 직접 연결한 경우와 domain별 reset synchronizer를 거친 경우를 비교한다. reset assert는 비동기, deassert는 각 clock domain에 동기화하는 흐름을 보인다.
 
 ## 실행
 
