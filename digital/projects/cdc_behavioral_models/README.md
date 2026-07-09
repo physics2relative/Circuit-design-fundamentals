@@ -30,7 +30,8 @@ rtl/
   reset_synchronizer.v
   reset_sync_rdc_xmodel.v
 
-  # 비교/참고용 ideal RTL
+temp/rtl_reference_unused/
+  # 현재 xrun 흐름에서는 사용하지 않는 이전 비교/참고용 ideal RTL
   no_sync_capture.v
   two_flop_sync.v
   toggle_sync.v
