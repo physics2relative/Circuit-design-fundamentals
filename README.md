@@ -29,23 +29,4 @@ glossary.md             # 용어 정리
 - [Resources](./resources.md)
 - [Glossary](./glossary.md)
 
-## Public Repository Policy
 
-이 저장소에는 직접 작성한 설명, 직접 만든 코드, 공개 가능한 파형/그림만 올립니다.
-
-올리지 않는 항목:
-
-- PDK/model 파일
-- Cadence/Virtuoso 라이브러리 원본
-- 라이선스 파일
-- 학교/회사/강의자료 원문
-- 출처가 불분명한 netlist, `.scs`, `.cdl`, `.oa` 파일
-- 대용량 시뮬레이션 산출물
-
-## Study Flow
-
-1. 개념을 짧게 정의합니다.
-2. 회로/RTL 관점에서 동작을 설명합니다.
-3. 간단한 예제나 실습 결과를 붙입니다.
-4. 면접에서 말할 수 있는 답변 형태로 정리합니다.
-5. 검증 방법과 corner case를 기록합니다.
