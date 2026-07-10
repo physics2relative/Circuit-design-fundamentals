@@ -13,9 +13,11 @@
 7. [Clock, Reset, and CDC](./07_clock_reset_cdc/README.md)
 8. [Low Power and Clock Gating](./08_low_power_clock_gating/README.md)
 9. [Memory, FIFO, and Interfaces](./09_memory_fifo_interface/README.md)
+10. [Computer Architecture Basics](./10_computer_architecture_basics/README.md)
 
 ## 분류 기준
 
 - `01_verilog`: Verilog로 RTL을 어떻게 표현하는가
 - `02~05`: 디지털 설계 기본기
 - `06~09`: timing, clock/reset, CDC, low power, memory/interface 등 실무형 주제
+- `10`: computer architecture와 SoC/accelerator system context
