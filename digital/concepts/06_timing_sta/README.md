@@ -1,6 +1,6 @@
 # Timing and STA
 
-Timing과 static timing analysis를 정리하는 대단원이다. 목표 clock frequency에서 sequential circuit이 안정적으로 동작하는지 판단하는 기준을 다룬다.
+Timing과 STA(static timing analysis)는 sequential circuit이 목표 clock에서 안정적으로 동작하는지 판단하는 기준이다. 핵심은 register 사이의 data path가 clock edge 기준으로 너무 늦게 도착하지 않는지, 또는 너무 빨리 바뀌지 않는지를 확인하는 것이다.
 
 ## 목차
 
@@ -15,10 +15,23 @@ Timing과 static timing analysis를 정리하는 대단원이다. 목표 clock f
 9. [STA Reports and Debug Flow](./09_sta_reports_debug_flow.md)
 10. [STA Interview Checklist](./10_sta_interview_checklist.md)
 
-## 정리 방향
+## 핵심 관점
 
-- Flip-flop to flip-flop timing path를 기준으로 setup/hold를 먼저 정리한다.
-- Clock skew, jitter, uncertainty가 setup/hold margin에 어떤 영향을 주는지 정리한다.
-- Critical path와 Fmax를 연결해서 timing closure 관점으로 확장한다.
-- False path, multicycle path 같은 예외 constraint는 개념과 위험성을 중심으로 정리한다.
-- CDC나 reset release처럼 clock domain과 관련된 내용은 `../07_clock_reset_cdc/`와 연결한다.
+- STA는 simulation처럼 vector를 넣어 동작을 확인하는 방식이 아니다.
+- STA는 clock, delay, constraint를 기준으로 모든 timing path를 정적으로 검사하는 방식이다.
+- 기본 단위는 launch flip-flop에서 capture flip-flop으로 가는 register-to-register path이다.
+- Setup check는 data가 다음 capture edge 전에 충분히 일찍 도착하는지 보는 것이다.
+- Hold check는 data가 현재 capture edge 직후 너무 빨리 바뀌지 않는지 보는 것이다.
+- Slack은 required time과 arrival time의 차이이며, timing margin을 의미한다.
+- Critical path는 timing margin이 가장 작은 path이며, 보통 Fmax를 제한한다.
+- Timing exception은 실제로 검사하지 않아야 하는 path 또는 여러 cycle을 허용하는 path를 STA에 알려주는 constraint이다.
+
+## 관련 실습
+
+STA 개념을 waveform으로 확인하기 위한 behavioral simulation 예제는 아래에 있다.
+
+```text
+digital/projects/sta_behavioral_models/
+```
+
+이 실습은 실제 STA tool을 대체하는 목적이 아니다. Setup/hold violation, clock skew, pipeline fix가 waveform에서 어떻게 보이는지 확인하기 위한 간단한 모델이다.
