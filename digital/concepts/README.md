@@ -11,7 +11,7 @@
 5. [Finite State Machine](./05_fsm/README.md)
 6. [Timing and STA](./06_timing_sta/README.md)
 7. [Clock, Reset, and CDC](./07_clock_reset_cdc/README.md)
-8. [Low Power and Clock Gating](./08_low_power_clock_gating/README.md)
+8. [Low Power Design](./08_low_power_clock_gating/README.md)
 9. [Memory, FIFO, and Interfaces](./09_memory_fifo_interface/README.md)
 10. [AMBA and AXI Interfaces](./10_amba_axi_interfaces/README.md)
 11. [Computer Architecture Basics](./11_computer_architecture_basics/README.md)

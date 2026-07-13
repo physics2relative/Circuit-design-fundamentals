@@ -21,7 +21,7 @@ digital/
 - [Finite State Machine](./concepts/05_fsm/README.md)
 - [Timing and STA](./concepts/06_timing_sta/README.md)
 - [Clock, Reset, and CDC](./concepts/07_clock_reset_cdc/README.md)
-- [Low Power and Clock Gating](./concepts/08_low_power_clock_gating/README.md)
+- [Low Power Design](./concepts/08_low_power_clock_gating/README.md)
 - [Memory, FIFO, and Interfaces](./concepts/09_memory_fifo_interface/README.md)
 
 ## Projects
