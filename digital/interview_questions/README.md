@@ -4,4 +4,3 @@
 
 - [Digital Design Interview Questions](./digital_questions.md)
 - [RTL Interview Study Guide](./rtl_interview_study_guide.md)
-- [STA Interview Checklist](./sta_interview_checklist.md)
