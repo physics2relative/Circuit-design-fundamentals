@@ -17,7 +17,7 @@ digital/
   interview_questions/  # 디지털/RTL 면담/면접 질문
   assets/               # RTL 블록도, simulation waveform, timing diagram
 
-docs/                   # 공통 정책, mixed-signal 질문 등 보조 문서
+docs/                   # 저장소 공통 정책 문서
 resources.md            # 참고 자료
 glossary.md             # 용어 정리
 ```
