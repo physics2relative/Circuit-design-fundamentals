@@ -14,6 +14,7 @@ Timing과 STA(static timing analysis)는 sequential circuit이 목표 clock에�
 8. [Timing Closure Techniques](./08_timing_closure_techniques.md)
 9. [STA Reports and Debug Flow](./09_sta_reports_debug_flow.md)
 10. [STA Interview Checklist](./10_sta_interview_checklist.md)
+11. [SDC Constraint Syntax Basics](./11_sdc_constraint_syntax_basics.md)
 
 ## 핵심 관점
 
