@@ -8,6 +8,7 @@ Clock gating과 integrated clock gating(ICG) cell의 구조적 이유를 Verilog
 
 - 단순 AND clock gating에서 enable이 clock high 구간에 변하면 gated clock에 mid-cycle edge가 생길 수 있음
 - latch-based ICG가 enable을 clock low phase에서만 sampling해 glitch-free gated clock을 만드는 방식
+- flip-flop으로 enable을 sampling하는 gating 구조가 왜 ICG 구조로 적합하지 않은지
 - test enable이 functional enable과 별도로 gated clock을 열어 scan/test clock 전달을 가능하게 하는 이유
 
 ## 구조
@@ -16,12 +17,14 @@ Clock gating과 integrated clock gating(ICG) cell의 구조적 이유를 Verilog
 rtl/
   naive_and_clock_gate.v
   latch_based_icg.v
+  ff_based_clock_gate.v
   clock_gating_target_counter.v
 
 tb/
   01_tb_naive_and_glitch.v
   02_tb_latch_based_icg.v
   03_tb_test_enable_bypass.v
+  04_tb_ff_based_latency.v
 
 sim/
   run_xrun.sh
@@ -33,6 +36,7 @@ sim/
 1. `naive_and_clock_gate`는 `gated_clk = clk & (en | test_en)` 구조이다. `clk=1`인 동안 `en`이 올라가면 gated clock에 정상 source clock edge가 아닌 mid-cycle rising edge가 생기고, target counter가 그 edge를 clock처럼 sampling할 수 있음을 보인다.
 2. `latch_based_icg`는 `clk=0`일 때만 effective enable을 latch한다. 같은 enable stimulus를 넣어도 `clk=1` 구간에서는 `latched_en`이 고정되어 gated clock에 mid-cycle edge가 생기지 않는다.
 3. `test_enable_bypass`는 functional enable이 0이어도 `test_en`이 1이면 ICG가 열려 test/scan mode에서 clock이 target flop까지 전달될 수 있음을 보인다.
+4. `ff_based_latency`는 enable이 clock low phase에서 미리 올라온 상황을 latch-based ICG와 FF-based gating으로 동시에 비교한다. Latch-based ICG는 다음 rising edge를 바로 통과시키지만, FF-based gating은 그 rising edge에서 enable을 sampling한 뒤에야 반영되므로 정상적인 ICG 구조로 쓰기 어렵다는 점을 보인다.
 
 ## 실행
 
