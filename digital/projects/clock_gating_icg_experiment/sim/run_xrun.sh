@@ -48,10 +48,9 @@ run_tb() {
   )
 }
 
-run_tb 01_naive_and_glitch      rtl/naive_and_clock_gate.v rtl/clock_gating_target_counter.v tb/01_tb_naive_and_glitch.v
-run_tb 02_latch_based_icg       rtl/latch_based_icg.v rtl/clock_gating_target_counter.v tb/02_tb_latch_based_icg.v
-run_tb 03_test_enable_bypass    rtl/latch_based_icg.v rtl/clock_gating_target_counter.v tb/03_tb_test_enable_bypass.v
-run_tb 04_ff_based_latency     rtl/ff_based_clock_gate.v rtl/latch_based_icg.v rtl/clock_gating_target_counter.v tb/04_tb_ff_based_latency.v
-
+run_tb 01_latch_based_icg       rtl/latch_based_icg.v rtl/clock_gating_target_counter.v tb/01_tb_latch_based_icg.v
+run_tb 02_naive_and_glitch      rtl/naive_and_clock_gate.v rtl/clock_gating_target_counter.v tb/02_tb_naive_and_glitch.v
+run_tb 03_ff_based_latency      rtl/ff_based_clock_gate.v rtl/latch_based_icg.v rtl/clock_gating_target_counter.v tb/03_tb_ff_based_latency.v
+run_tb 04_test_enable_bypass    rtl/latch_based_icg.v rtl/clock_gating_target_counter.v tb/04_tb_test_enable_bypass.v
 echo "All clock gating ICG simulations completed with xrun."
 echo "Logs and SHM waveforms are under sim/xrun_work/<numbered_tb_name>/."

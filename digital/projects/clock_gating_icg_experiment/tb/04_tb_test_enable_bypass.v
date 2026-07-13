@@ -39,7 +39,7 @@ module tb_test_enable_bypass;
         #28 test_en = 1'b0; // t=40, clk low
 
         #20;
-        $display("03 test_enable_bypass done: count=%0d", count);
+        $display("04 test_enable_bypass done: count=%0d", count);
         $finish;
     end
 endmodule

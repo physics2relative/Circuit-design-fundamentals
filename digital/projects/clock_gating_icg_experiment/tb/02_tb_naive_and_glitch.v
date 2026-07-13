@@ -41,7 +41,7 @@ module tb_naive_and_glitch;
         #12 en = 1'b0;  // t=34, clk low before next rising edge
 
         #20;
-        $display("01 naive_and_glitch done: count=%0d", count);
+        $display("02 naive_and_glitch done: count=%0d", count);
         $finish;
     end
 endmodule

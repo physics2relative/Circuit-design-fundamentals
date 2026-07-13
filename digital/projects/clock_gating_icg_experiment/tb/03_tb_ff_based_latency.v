@@ -61,7 +61,7 @@ module tb_ff_based_latency;
         #23 en = 1'b0;  // t=35, right after a rising edge
 
         #35;
-        $display("04 ff_based_latency done: count_ff=%0d count_latch=%0d", count_ff, count_latch);
+        $display("03 ff_based_latency done: count_ff=%0d count_latch=%0d", count_ff, count_latch);
         $finish;
     end
 endmodule

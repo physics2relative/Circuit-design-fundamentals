@@ -41,7 +41,7 @@ module tb_latch_based_icg;
         #15 en = 1'b0;  // t=32, clk low
 
         #25;
-        $display("02 latch_based_icg done: count=%0d", count);
+        $display("01 latch_based_icg done: count=%0d", count);
         $finish;
     end
 endmodule
