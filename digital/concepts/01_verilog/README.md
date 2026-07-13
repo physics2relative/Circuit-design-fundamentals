@@ -32,6 +32,7 @@ FIFO/interface 등   → ../09_memory_fifo_interface/
 6. [Parameterization](./06_parameterization.md)
 7. [Simulation and Testbench](./07_simulation_and_testbench.md)
 8. [Synthesis Pitfalls](./08_synthesis_pitfalls.md)
+9. [Verilog Interview Checklist](./09_verilog_interview_checklist.md)
 
 ## 핵심 정리
 

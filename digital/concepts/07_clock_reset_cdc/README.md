@@ -11,6 +11,7 @@ Clock/reset 사용 원칙과 CDC(clock domain crossing), RDC(reset domain crossi
 5. [Async FIFO CDC View](./05_async_fifo_cdc_view.md)
 6. [Reset Synchronizer and RDC](./06_reset_synchronizer_rdc.md)
 7. [CDC Design Checklist](./07_cdc_design_checklist.md)
+8. [CDC Interview Checklist](./08_cdc_interview_checklist.md)
 
 ## 핵심 요약
 

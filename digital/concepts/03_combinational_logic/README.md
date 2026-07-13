@@ -11,6 +11,7 @@
 5. [Priority Logic](./05_priority_logic.md)
 6. [Glitch, Hazard, and Combinational Loop](./06_glitch_hazard_loop.md)
 7. [RTL Coding Checklist](./07_rtl_coding_checklist.md)
+8. [Combinational Logic Interview Checklist](./08_combinational_interview_checklist.md)
 
 ## 핵심 정리
 

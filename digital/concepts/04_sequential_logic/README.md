@@ -10,6 +10,7 @@ Clock edge를 기준으로 state를 저장하고 갱신하는 logic을 정리하
 4. [Enable and Pipeline Register](./04_enable_pipeline.md)
 5. [Reset in Sequential Logic](./05_reset_in_sequential_logic.md)
 6. [Sequential RTL Checklist](./06_sequential_rtl_checklist.md)
+7. [Sequential Logic Interview Checklist](./07_sequential_interview_checklist.md)
 
 ## 핵심 정리
 

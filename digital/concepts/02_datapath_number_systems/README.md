@@ -11,6 +11,7 @@
 5. [Width Extension and Truncation](./05_width_extension_truncation.md)
 6. [Fixed-Point Basics](./06_fixed_point_basics.md)
 7. [Datapath Building Blocks](./07_datapath_building_blocks.md)
+8. [Datapath and Number Systems Interview Checklist](./08_datapath_interview_checklist.md)
 
 ## 핵심 정리
 
