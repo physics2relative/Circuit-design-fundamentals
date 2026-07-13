@@ -9,18 +9,19 @@ Low power design은 회로의 성능과 기능을 유지하면서 불필요한 p
 3. [Dynamic Power](./03_dynamic_power.md)
 4. [Power Management Techniques](./04_power_management_techniques.md)
 5. [Clock Gating](./05_clock_gating.md)
-6. [Power Gating](./06_power_gating.md)
-7. [Multi-Voltage and Power Domain](./07_multi_voltage_power_domain.md)
-8. [Isolation, Level Shifter, and Retention](./08_isolation_level_shifter_retention.md)
-9. [UPF Basics](./09_upf_basics.md)
-10. [Low Power Interview Checklist](./10_low_power_interview_checklist.md)
+6. [Integrated Clock Gating Cell](./06_integrated_clock_gating_cell.md)
+7. [Power Gating](./07_power_gating.md)
+8. [Multi-Voltage and Power Domain](./08_multi_voltage_power_domain.md)
+9. [Isolation, Level Shifter, and Retention](./09_isolation_level_shifter_retention.md)
+10. [UPF Basics](./10_upf_basics.md)
+11. [Low Power Interview Checklist](./11_low_power_interview_checklist.md)
 
 ## 핵심 관점
 
 - 전체 power는 크게 dynamic power와 static power로 나눌 수 있다.
 - Dynamic power는 switching activity, capacitance, voltage, frequency에 의해 결정된다.
 - Static power는 회로가 switching하지 않아도 발생하는 leakage 성분이다.
-- Clock gating은 idle logic의 clock switching을 줄여 dynamic power를 낮춘다.
+- Clock gating은 idle logic의 clock switching을 줄여 dynamic power를 낮춘다. ICG cell은 이를 glitch-free하게 구현하기 위한 전용 cell이다.
 - Power gating은 idle power domain의 supply를 차단해 static power를 낮춘다.
 - Multi-voltage design에서는 voltage domain crossing을 위해 level shifter가 필요하다.
 - Power-gated domain에서는 off domain output을 안전한 값으로 묶기 위해 isolation cell이 필요하다.
