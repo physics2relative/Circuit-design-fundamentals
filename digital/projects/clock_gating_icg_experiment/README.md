@@ -33,11 +33,24 @@ sim/
   xrun_shm.tcl
 ```
 
+## 공통 enable 시나리오
+
+1~3번 testbench는 같은 enable stimulus를 사용한다.
+
+```text
+clk period = 10ns
+clk high   = 15~20ns, 25~30ns, 35~40ns, ...
+en rises   = 17ns  # clk가 이미 high인 중간
+en falls   = 57ns  # clk가 high인 중간
+```
+
+이 시나리오는 raw AND gate에는 의도하지 않은 mid-cycle edge와 잘린 high pulse를 만들고, latch-based ICG에는 정상 clock edge만 통과되는 것을 비교하기 위한 것이다.
+
 ## 실습 흐름
 
-1. `latch_based_icg`는 기준 ICG 구조이다. `clk=0`일 때만 effective enable을 latch하고, `clk=1` 동안 `latched_en`을 고정한다. Enable이 clock high 구간에 변해도 gated clock에는 mid-cycle edge가 생기지 않는다.
-2. `naive_and_clock_gate`는 `gated_clk = clk & (en | test_en)` 구조이다. `clk=1`인 동안 `en`이 올라가면 gated clock에 정상 source clock edge가 아닌 mid-cycle rising edge가 생기고, target counter가 그 edge를 clock처럼 sampling할 수 있음을 보인다.
-3. `ff_based_latency`는 enable이 clock low phase에서 미리 올라온 상황을 latch-based ICG와 FF-based gating으로 동시에 비교한다. Latch-based ICG는 다음 rising edge를 바로 통과시키지만, FF-based gating은 그 rising edge에서 enable을 sampling한 뒤에야 반영되므로 정상적인 ICG 구조로 쓰기 어렵다는 점을 보인다.
+1. `latch_based_icg`는 기준 ICG 구조이다. `clk=0`일 때만 effective enable을 latch하고, `clk=1` 동안 `latched_en`을 고정한다. `en`은 17ns에 올라가지만 ICG는 20ns low phase에서 이를 반영하고, 25ns/35ns/45ns/55ns의 정상 clock edge를 통과시킨다.
+2. `naive_and_clock_gate`는 `gated_clk = clk & (en | test_en)` 구조이다. 같은 stimulus에서 `en`이 17ns에 올라가면 gated clock에 정상 source clock edge가 아닌 mid-cycle rising edge가 생기고, 57ns에 내려가면 high pulse가 중간에 잘린다.
+3. `ff_based_latency`는 같은 stimulus를 latch-based ICG와 FF-based gating으로 동시에 비교한다. FF-based gating은 enable을 posedge에서 sampling한 뒤 clock-to-Q 이후에 반영하므로, 기준 ICG처럼 다음 정상 edge 전에 enable을 준비하는 구조가 아님을 보인다.
 4. `test_enable_bypass`는 functional enable이 0이어도 `test_en`이 1이면 ICG가 열려 test/scan mode에서 clock이 target flop까지 전달될 수 있음을 보인다.
 
 ## 실행

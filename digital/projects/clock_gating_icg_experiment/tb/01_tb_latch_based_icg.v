@@ -33,14 +33,15 @@ module tb_latch_based_icg;
 
         #3  rst_n = 1'b1;
 
-        // Same stimulus as the naive case. en rises while clk is high, but
-        // latched_en cannot update until clk goes low. Therefore gated_clk has
-        // no mid-cycle edge at 17ns; the request is applied on the next normal
-        // clock pulse after the low phase samples en.
+        // Common enable scenario used by TB 01~03.
+        // clk is high from 15ns to 20ns. en rises at 17ns, which would be
+        // dangerous for a raw AND gate. The latch-based ICG does not update
+        // latched_en until clk goes low at 20ns, then passes normal clock
+        // edges at 25ns, 35ns, 45ns, and 55ns while en remains high.
         #14 en = 1'b1;  // t=17, clk high
-        #15 en = 1'b0;  // t=32, clk low
+        #40 en = 1'b0;  // t=57, clk high, ICG closes after next low phase
 
-        #25;
+        #23;
         $display("01 latch_based_icg done: count=%0d", count);
         $finish;
     end

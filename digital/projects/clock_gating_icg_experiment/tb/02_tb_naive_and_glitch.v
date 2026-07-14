@@ -31,16 +31,14 @@ module tb_naive_and_glitch;
 
         #3  rst_n = 1'b1;
 
-        // clk is high from 15ns to 20ns. Raising en at 17ns creates a
-        // mid-cycle rising edge on gated_clk in the naive AND gate.
-        #14 en = 1'b1;  // t=17
-        #1  en = 1'b0;  // t=18, pulse is cut while clk is still high
+        // Same enable scenario as TB 01 and TB 03.
+        // Because this gate uses raw en directly, en rising at 17ns while clk
+        // is already high creates a mid-cycle rising edge on gated_clk. en
+        // falling at 57ns while clk is high also cuts the high pulse short.
+        #14 en = 1'b1;  // t=17, clk high -> mid-cycle gated_clk edge
+        #40 en = 1'b0;  // t=57, clk high -> shortened high pulse
 
-        // Normal enable before a clock edge for comparison.
-        #4  en = 1'b1;  // t=22, clk low
-        #12 en = 1'b0;  // t=34, clk low before next rising edge
-
-        #20;
+        #23;
         $display("02 naive_and_glitch done: count=%0d", count);
         $finish;
     end

@@ -53,14 +53,15 @@ module tb_ff_based_latency;
 
         #3 rst_n = 1'b1;
 
-        // en becomes active during clk low before the t=15 rising edge.
-        // Latch-based ICG samples en in that low phase and passes the t=15
-        // clock edge. FF-based gating samples en at t=15, after the edge has
-        // already arrived, so its useful gated clock starts later.
-        #9  en = 1'b1;  // t=12, clk low
-        #23 en = 1'b0;  // t=35, right after a rising edge
+        // Same enable scenario as TB 01 and TB 02.
+        // Latch-based ICG samples en during clk low and passes full normal
+        // pulses. FF-based gating samples en only at a posedge; its output
+        // enable changes after that edge, so the first/last gated pulses are
+        // not aligned like a proper ICG.
+        #14 en = 1'b1;  // t=17, clk high
+        #40 en = 1'b0;  // t=57, clk high
 
-        #35;
+        #23;
         $display("03 ff_based_latency done: count_ff=%0d count_latch=%0d", count_ff, count_latch);
         $finish;
     end
