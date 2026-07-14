@@ -1,25 +1,21 @@
-# Memory, FIFO, and Interfaces
+# 09. Memory, FIFO, and Interfaces
 
-## 작성 범위
+Memory, FIFO, interface는 data를 저장하고 block 사이의 흐름을 조절하는 구조이다. RTL 설계 관점에서는 `어디에 저장하는가`, `언제 쓰고 읽는가`, `가득 참/비어 있음은 어떻게 판단하는가`, `상대 block이 받을 수 없을 때 어떻게 멈추는가`를 명확히 하는 것이 핵심이다.
 
-Data buffering, storage, block interface를 정리하는 대단원이다.
+## 목차
 
-## 포함할 주제
+1. [Memory Basics](./01_memory_basics.md)
+2. [Synchronous FIFO](./02_synchronous_fifo.md)
+3. [FIFO Full / Empty Flags](./03_fifo_full_empty_flags.md)
+4. [FIFO Interface and Valid-Ready](./04_fifo_interface_valid_ready.md)
+5. [Asynchronous FIFO Overview](./05_asynchronous_fifo_overview.md)
+6. [Gray Pointer FIFO](./06_gray_pointer_fifo.md)
+7. [FIFO Verification Checklist](./07_fifo_verification_checklist.md)
+8. [FIFO Interview Checklist](./08_fifo_interview_checklist.md)
 
-- register file
-- SRAM 기본 개념
-- single-port / dual-port memory
-- synchronous FIFO
-- asynchronous FIFO
-- full / empty
-- almost full / almost empty
-- pointer wrap-around
-- valid-ready handshake
-- backpressure
-- request/grant
-- UART / SPI / I2C 개념 수준
-- AXI-lite 개념 수준
+## 학습 방향
 
-## 정리 방향
-
-Memory와 FIFO는 data를 저장하고 흐름을 조절하는 구조이다. Interface는 block 사이에서 data와 control을 안전하게 전달하기 위한 규약이다. Async FIFO의 CDC 상세는 `../07_clock_reset_cdc/`와 연결해 정리한다.
+- 먼저 synchronous FIFO로 pointer, wrap-around, full/empty 판단을 정리한다.
+- 그 다음 valid-ready와 backpressure를 연결해서 FIFO가 system-level dataflow에서 어떤 역할을 하는지 본다.
+- asynchronous FIFO는 CDC의 응용 예시로 다룬다. 핵심은 data memory는 공유하고, pointer 정보만 Gray code로 바꿔 다른 clock domain에 넘기는 것이다.
+- Async FIFO의 metastability 자체는 `../07_clock_reset_cdc/README.md`의 synchronizer 개념과 연결해서 본다.
