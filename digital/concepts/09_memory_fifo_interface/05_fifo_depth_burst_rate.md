@@ -153,6 +153,89 @@ required_depth >= initial_occupancy + required_free_space
 
 실제 구현에서는 power-of-two depth를 쓰는 경우가 많으므로 42가 계산되면 64 entry FIFO로 올리는 식의 선택을 할 수 있다.
 
+
+## Burst-to-burst gap 기준 계산
+
+Burst-to-burst gap은 한 burst가 끝난 뒤 다음 burst가 시작되기 전까지 producer가 data를 보내지 않는 시간이다. FIFO depth 계산에서는 이 gap 동안 consumer가 FIFO를 얼마나 비울 수 있는지가 중요하다.
+
+```text
+burst 1: B entries write
+gap:     T_gap 동안 write 없음
+burst 2: B entries write
+gap:     T_gap 동안 write 없음
+```
+
+Burst 중 FIFO가 차오른 양은 다음처럼 볼 수 있다.
+
+```text
+fill_during_burst = burst_size - read_during_burst
+```
+
+Gap 동안 FIFO가 비워지는 양은 다음이다.
+
+```text
+drain_during_gap = T_gap * read_rate
+```
+
+반복 burst에서 중요한 값은 burst 하나가 끝나고 다음 burst가 오기 전까지 occupancy가 순증가하는지이다.
+
+```text
+net_increase_per_burst = fill_during_burst - drain_during_gap
+```
+
+- `net_increase_per_burst <= 0`이면 gap 동안 이전 burst에서 쌓인 data를 모두 비울 수 있다.
+- `net_increase_per_burst > 0`이면 burst가 반복될수록 FIFO occupancy가 누적된다.
+
+예를 들어 다음 조건을 보자.
+
+```text
+f_write    = 200 MHz
+f_read     = 100 MHz
+burst_size = 64 entries
+T_gap      = 400 ns
+```
+
+앞의 계산처럼 burst duration은 320 ns이고, burst 동안 read 가능한 양은 32 entries이다. 따라서 burst 중 FIFO가 차오른 양은 다음이다.
+
+```text
+fill_during_burst = 64 - 32
+                  = 32 entries
+```
+
+Gap 동안 read 가능한 양은 다음이다.
+
+```text
+drain_during_gap = 400 ns * 100 MHz
+                 = 40 entries
+```
+
+따라서 반복 burst 사이에서 occupancy는 누적되지 않는다.
+
+```text
+net_increase_per_burst = 32 - 40
+                       = -8 entries
+```
+
+반대로 gap이 100 ns라면 다음과 같다.
+
+```text
+drain_during_gap = 100 ns * 100 MHz
+                 = 10 entries
+
+net_increase_per_burst = 32 - 10
+                       = 22 entries
+```
+
+이 경우 burst가 반복될 때마다 FIFO에 22 entry씩 추가로 쌓인다. 예를 들어 FIFO free space가 64 entry라면 대략 세 번째 burst 근처에서 full 위험이 생긴다.
+
+```text
+number_of_bursts_until_full ≈ available_free_entries / net_increase_per_burst
+                             ≈ 64 / 22
+                             ≈ 2.9 bursts
+```
+
+따라서 반복 burst traffic에서는 burst size 하나만 보면 부족하다. Burst duration, burst-to-burst gap, read bandwidth를 함께 보고 worst-case occupancy peak를 계산해야 한다.
+
 ## Stall duration 기준 계산 예시
 
 Consumer가 일정 시간 동안 stall되면 그 시간 동안 FIFO occupancy가 증가한다. Stall window 동안 필요한 여유 공간은 다음이다.
@@ -309,12 +392,13 @@ if free_space <= 4:
 FIFO depth를 정할 때는 다음을 확인한다.
 
 1. Producer의 최대 burst size이다.
-2. Consumer의 최대 stall duration이다.
-3. 평균 input bandwidth와 output bandwidth이다.
-4. Backpressure를 걸 수 있는 구조인지이다.
-5. Backpressure가 실제로 반영되기까지 latency가 몇 cycle인지이다.
-6. Full 직전까지 허용할지, almost full로 미리 막을지이다.
+2. Burst-to-burst gap이 충분한지이다.
+3. Consumer의 최대 stall duration이다.
+4. 평균 input bandwidth와 output bandwidth이다.
+5. Backpressure를 걸 수 있는 구조인지이다.
+6. Backpressure가 실제로 반영되기까지 latency가 몇 cycle인지이다.
+7. Full 직전까지 허용할지, almost full로 미리 막을지이다.
 
 ## 핵심 정리
 
-FIFO depth는 burst와 stall을 흡수하기 위한 buffer 크기이다. 평균적으로 input bandwidth가 output bandwidth보다 크면 FIFO depth만으로 해결할 수 없다. 실무적으로는 burst size, stall duration, backpressure latency, almost full threshold를 함께 고려해서 depth를 잡는다.
+FIFO depth는 burst와 stall을 흡수하기 위한 buffer 크기이다. 평균적으로 input bandwidth가 output bandwidth보다 크면 FIFO depth만으로 해결할 수 없다. 실무적으로는 burst size, burst-to-burst gap, stall duration, backpressure latency, almost full threshold를 함께 고려해서 depth를 잡는다.
