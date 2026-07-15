@@ -28,6 +28,18 @@ fifo_design_models/
 4. `04_async_fifo_gray_basic`은 write clock과 read clock이 다른 상황에서 Gray pointer 기반 async FIFO가 data 순서를 유지하는지 확인한다.
 5. `05_async_fifo_clock_ratio`는 write clock이 read clock보다 빠른 상황에서 full stall이 걸리고, 이후 read 쪽에서 data를 순서대로 drain하는지 확인한다.
 
+
+## RTL 구조 관점
+
+`rtl/async_fifo_gray.v`는 학습용으로 async FIFO를 한 파일에 통합해 둔 형태이다. 구조적으로는 다음 네 부분으로 나누어 볼 수 있다.
+
+- memory array: `mem`
+- write control logic, 즉 wctl: `wbin`, `wgray`, `wq1_rgray`, `wq2_rgray`, `wfull_r`, `wpush` 관련 로직
+- read control logic, 즉 rctl: `rbin`, `rgray`, `rq1_wgray`, `rq2_wgray`, `rempty_r`, `rpop` 관련 로직
+- pointer crossing: Gray pointer를 2-stage synchronizer로 상대 clock domain에 전달하는 부분
+
+Waveform을 볼 때는 `wbin_dbg/wgray_dbg`가 write-side pointer이고, `rbin_dbg/rgray_dbg`가 read-side pointer이다. `wq2_rgray_dbg`는 write domain으로 넘어온 read pointer, `rq2_wgray_dbg`는 read domain으로 넘어온 write pointer이다.
+
 ## 실행
 
 ```bash

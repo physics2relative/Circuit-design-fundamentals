@@ -32,6 +32,51 @@ wr_en, wr_data                           rd_en, rd_data
 
 Memory는 양쪽 domain이 공유하지만, write pointer는 write clock으로만 갱신하고 read pointer는 read clock으로만 갱신한다.
 
+
+## Write control logic / Read control logic
+
+Async FIFO는 보통 memory array 하나와 양쪽 clock domain의 control logic으로 나누어 볼 수 있다. 문서나 논문에서는 이를 `wctl`과 `rctl`처럼 줄여 부르기도 한다.
+
+```text
+write clock domain                         read clock domain
+
+    wctl logic                                 rctl logic
+    - write pointer                            - read pointer
+    - binary to Gray                           - binary to Gray
+    - memory write address                     - memory read address
+    - synchronized read pointer 수신            - synchronized write pointer 수신
+    - full flag 생성                           - empty flag 생성
+          |                                          |
+          v                                          v
+                 shared dual-port memory
+```
+
+### wctl logic
+
+`wctl`은 write control logic이다. Write clock domain에서만 동작하며 다음을 담당한다.
+
+- write가 실제로 가능한지 판단한다.
+- `winc && !wfull`일 때 memory에 data를 쓴다.
+- write pointer를 증가시킨다.
+- write pointer를 Gray code로 변환해서 read domain으로 넘긴다.
+- read domain에서 넘어온 synchronized read pointer를 이용해 `wfull`을 만든다.
+
+따라서 `wctl`은 “어디에 쓸 것인가”와 “더 써도 되는가”를 결정하는 write-side 제어부이다.
+
+### rctl logic
+
+`rctl`은 read control logic이다. Read clock domain에서만 동작하며 다음을 담당한다.
+
+- read가 실제로 가능한지 판단한다.
+- `rinc && !rempty`일 때 read pointer를 증가시킨다.
+- read pointer를 Gray code로 변환해서 write domain으로 넘긴다.
+- write domain에서 넘어온 synchronized write pointer를 이용해 `rempty`를 만든다.
+- 현재 read pointer가 가리키는 entry를 output data로 내보낸다.
+
+따라서 `rctl`은 “어디를 읽을 것인가”와 “읽을 data가 있는가”를 결정하는 read-side 제어부이다.
+
+중요한 점은 `wctl`과 `rctl`이 서로의 binary pointer를 직접 보지 않는다는 것이다. 상대 domain의 pointer는 Gray code 형태로 synchronizer를 통과한 뒤 full/empty 판단에만 사용한다.
+
 ## Full / empty 판단
 
 Async FIFO에서 full은 write domain에서 판단한다. 그러려면 read pointer가 어디 있는지 write domain이 알아야 한다. 따라서 read pointer를 Gray code로 바꾸고 synchronizer를 통해 write domain으로 가져온다.
