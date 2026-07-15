@@ -39,56 +39,237 @@ FIFO가 해결하는 것은 보통 다음과 같은 순간적인 불균형이다
 
 따라서 depth 계산에서는 평균 throughput뿐 아니라 burst size와 stall duration을 같이 봐야 한다.
 
-## Burst size 기준 직관식
 
-가장 단순한 경우를 생각한다. Producer가 `B`개의 data를 burst로 넣고, 그동안 consumer가 `D`개를 처리할 수 있다면 필요한 FIFO 여유 공간은 다음과 같다.
+## 정량적 depth 계산의 기본식
 
-```text
-required depth >= B - D
-```
-
-예를 들어 producer가 16 beat burst를 보내는 동안 consumer가 4 beat를 읽을 수 있으면, 최소 12 entry 이상의 여유 공간이 필요하다.
+FIFO occupancy는 누적 write 수와 누적 read 수의 차이로 볼 수 있다. 따라서 필요한 FIFO depth는 어떤 시간 구간에서든 occupancy가 가장 커지는 값을 기준으로 잡는다.
 
 ```text
-required depth >= 16 - 4 = 12
+occupancy(t) = cumulative_write(t) - cumulative_read(t)
+
+required_depth >= max_t [cumulative_write(t) - cumulative_read(t)]
 ```
 
-이미 FIFO에 data가 남아 있을 수 있다면 그 occupancy까지 고려해야 한다.
+즉, FIFO depth 계산은 결국 “특정 관찰 구간 동안 들어온 data 수에서 빠져나간 data 수를 뺀 값의 최대치”를 찾는 문제이다.
+
+기존에 FIFO에 data가 남아 있는 상태에서 burst가 들어올 수 있다면 초기 occupancy도 더해야 한다.
 
 ```text
-required total depth >= existing occupancy + burst input - consumer drain
+required_depth >= initial_occupancy
+                + input_arrival_during_window
+                - output_drain_during_window
 ```
 
-## Stall duration 기준 직관식
+## Frequency 기반 rate 계산
 
-Consumer가 `Tstall` cycle 동안 완전히 멈추고, producer가 매 cycle 1개씩 data를 넣을 수 있다면 최소 여유 공간은 다음과 같다.
+한 entry를 한 beat라고 하면 write/read rate는 clock frequency와 cycle당 처리 가능한 beat 수로 계산한다.
 
 ```text
-required free space >= producer_rate * Tstall
+write_rate = f_write * write_beats_per_cycle * write_utilization
+read_rate  = f_read  * read_beats_per_cycle  * read_utilization
 ```
 
-Consumer가 stall 중에도 일부 data를 처리할 수 있다면 drain되는 양을 빼면 된다.
+보통 1 cycle에 최대 1 beat씩 쓰고 읽는 FIFO라면 다음처럼 단순화된다.
 
 ```text
-required free space >= input_arrival_during_window - output_drain_during_window
+write_rate = f_write * write_utilization
+read_rate  = f_read  * read_utilization
 ```
 
-cycle 단위로 쓰면 다음과 같다.
+여기서 utilization은 valid/ready가 실제 transaction으로 이어지는 비율이다. 예를 들어 write clock이 200 MHz이지만 평균적으로 두 cycle에 한 번만 push가 발생하면 write utilization은 0.5이고 평균 write rate는 100 Mbeat/s이다.
 
 ```text
-required free space >= push_rate * Ncycle - pop_rate * Ncycle
+write_rate = 200 MHz * 1 beat/cycle * 0.5
+           = 100 Mbeat/s
 ```
+
+중요한 전제는 장기 평균에서 다음 조건이 만족되어야 한다는 점이다.
+
+```text
+average_read_rate >= average_write_rate
+```
+
+이 조건이 깨지면 FIFO depth를 키워도 full이 되는 시간을 늦출 뿐, steady-state 문제를 해결하지 못한다.
+
+## Burst size 기준 계산 예시
+
+Producer가 `B`개의 burst를 보내고, write clock이 `f_write`, read clock이 `f_read`라고 하자. Write 쪽이 매 write clock마다 1 beat씩 쓰면 burst가 지속되는 시간은 다음이다.
+
+```text
+T_burst = B / f_write
+```
+
+그동안 consumer가 읽을 수 있는 data 수는 다음이다.
+
+```text
+read_during_burst = floor(T_burst * f_read * read_beats_per_cycle * read_utilization)
+```
+
+따라서 burst를 흡수하기 위해 필요한 FIFO 여유 공간은 다음처럼 잡을 수 있다.
+
+```text
+required_free_space >= B - read_during_burst
+```
+
+예를 들어 다음 조건을 보자.
+
+```text
+f_write    = 200 MHz
+f_read     = 100 MHz
+burst_size = 64 entries
+write_beats_per_cycle = 1
+read_beats_per_cycle  = 1
+read_utilization      = 1.0
+```
+
+Burst duration은 다음이다.
+
+```text
+T_burst = 64 / 200 MHz
+        = 320 ns
+```
+
+Read 쪽은 320 ns 동안 100 MHz로 1 beat/cycle을 읽을 수 있다.
+
+```text
+read_during_burst = 320 ns * 100 MHz
+                  = 32 entries
+```
+
+따라서 필요한 FIFO 여유 공간은 다음이다.
+
+```text
+required_free_space >= 64 - 32
+                    >= 32 entries
+```
+
+즉, burst 시작 시 FIFO가 비어 있다는 가정이면 최소 32 entry가 필요하다. 만약 burst 시작 전에 이미 10 entry가 차 있었다면 total depth는 다음 이상이어야 한다.
+
+```text
+required_depth >= initial_occupancy + required_free_space
+               >= 10 + 32
+               >= 42 entries
+```
+
+실제 구현에서는 power-of-two depth를 쓰는 경우가 많으므로 42가 계산되면 64 entry FIFO로 올리는 식의 선택을 할 수 있다.
+
+## Stall duration 기준 계산 예시
+
+Consumer가 일정 시간 동안 stall되면 그 시간 동안 FIFO occupancy가 증가한다. Stall window 동안 필요한 여유 공간은 다음이다.
+
+```text
+required_free_space >= input_arrival_during_stall - output_drain_during_stall
+```
+
+Consumer가 완전히 멈춘 경우에는 output drain이 0이므로 더 단순해진다.
+
+```text
+required_free_space >= write_rate * T_stall
+```
+
+예를 들어 다음 조건을 보자.
+
+```text
+f_write = 200 MHz
+producer는 매 write clock마다 1 entry write
+T_stall = 100 ns
+consumer는 stall 동안 read 불가
+```
+
+Stall 동안 들어오는 data 수는 다음이다.
+
+```text
+input_arrival = 200 MHz * 100 ns
+              = 20 entries
+```
+
+따라서 consumer stall만 흡수하려면 최소 20 entry의 free space가 필요하다.
+
+```text
+required_free_space >= 20 entries
+```
+
+Burst와 stall이 동시에 있는 경우에는 같은 관찰 구간 안에서 계산한다. 예를 들어 앞의 64-beat burst 조건에서 read 쪽이 처음 100 ns 동안 stall된다고 하자.
+
+```text
+f_write    = 200 MHz
+f_read     = 100 MHz
+burst_size = 64 entries
+T_burst    = 320 ns
+T_stall    = 100 ns
+```
+
+Read가 실제로 동작 가능한 시간은 다음이다.
+
+```text
+T_read_active = T_burst - T_stall
+              = 320 ns - 100 ns
+              = 220 ns
+```
+
+그동안 read 가능한 data 수는 다음이다.
+
+```text
+read_during_burst = 220 ns * 100 MHz
+                  = 22 entries
+```
+
+따라서 필요한 FIFO 여유 공간은 다음이다.
+
+```text
+required_free_space >= 64 - 22
+                    >= 42 entries
+```
+
+Stall이 없을 때는 32 entry였지만, 100 ns stall이 추가되면 42 entry가 필요해진다.
 
 ## Clock이 다른 경우
 
-Async FIFO에서는 write clock과 read clock이 다르므로 rate를 시간 기준으로 맞춰 봐야 한다.
+Async FIFO에서는 write clock과 read clock이 다르므로 cycle 수가 아니라 시간 기준 bandwidth를 비교해야 한다.
 
 ```text
-write bandwidth = write_clock_frequency * write_data_per_cycle
-read bandwidth  = read_clock_frequency  * read_data_per_cycle
+write_bandwidth = f_write * write_beats_per_cycle * write_utilization
+read_bandwidth  = f_read  * read_beats_per_cycle  * read_utilization
 ```
 
-write bandwidth가 평균적으로 read bandwidth보다 크면 FIFO는 언젠가 full이 된다. 이 경우 FIFO depth를 늘리는 것은 overflow 시점을 늦출 뿐, 구조적인 해결책은 아니다.
+예를 들어 다음 조건을 보자.
+
+```text
+f_write = 250 MHz, write_utilization = 0.4
+f_read  = 100 MHz, read_utilization  = 1.0
+각 cycle당 1 beat 처리
+```
+
+평균 bandwidth는 다음이다.
+
+```text
+write_bandwidth = 250 MHz * 1 * 0.4 = 100 Mbeat/s
+read_bandwidth  = 100 MHz * 1 * 1.0 = 100 Mbeat/s
+```
+
+이 경우 장기 평균은 같으므로 FIFO는 burst와 phase 차이를 흡수하는 용도로 동작할 수 있다. 반면 write utilization이 0.6이면 다음이 된다.
+
+```text
+write_bandwidth = 250 MHz * 1 * 0.6 = 150 Mbeat/s
+read_bandwidth  = 100 MHz * 1 * 1.0 = 100 Mbeat/s
+```
+
+이 경우 평균적으로 write가 더 빠르므로 FIFO는 언젠가 full이 된다. Depth를 늘리면 full까지 걸리는 시간은 늘어나지만, steady-state overflow 문제를 해결하지는 못한다.
+
+평균 write bandwidth가 read bandwidth보다 큰 경우, full까지 걸리는 시간은 대략 다음처럼 볼 수 있다.
+
+```text
+time_to_full ≈ available_free_entries / (write_rate - read_rate)
+```
+
+예를 들어 free space가 64 entry이고 net accumulation rate가 50 Mbeat/s이면:
+
+```text
+time_to_full ≈ 64 / 50 Mbeat/s
+             ≈ 1.28 us
+```
+
+따라서 async FIFO depth 계산에서는 CDC 안전성뿐 아니라 write/read bandwidth의 장기 평균 조건도 반드시 확인해야 한다.
 
 ## Backpressure 가능 여부
 
@@ -107,10 +288,21 @@ Full이 된 뒤에 producer를 멈추면 이미 늦을 수 있다. Ready deasser
 이때 almost full threshold를 사용한다.
 
 ```text
-almost_full threshold >= response latency 동안 추가로 들어올 수 있는 data 수
+almost_full_margin >= write_rate * backpressure_response_latency
 ```
 
-예를 들어 ready를 낮춘 뒤에도 최대 4 beat가 더 들어올 수 있으면, 최소 4 entry 이상 남았을 때 almost full을 올려야 안전하다.
+cycle 단위로 보면 다음과 같다.
+
+```text
+almost_full_margin >= additional_writes_after_ready_deassert
+```
+
+예를 들어 ready를 낮춘 뒤에도 producer pipeline, bus latency, arbitration 때문에 최대 4 beat가 더 들어올 수 있으면, 최소 4 entry 이상 남았을 때 almost full을 올려야 안전하다.
+
+```text
+if free_space <= 4:
+    almost_full = 1
+```
 
 ## RTL 설계 포인트
 
