@@ -1,4 +1,4 @@
-# 09-08. FIFO Interview Checklist
+# 09-09. FIFO Interview Checklist
 
 FIFO 관련 면접 질문은 pointer, full/empty 판단, valid-ready, async FIFO CDC로 이어지는 경우가 많다. 단순 구현 암기보다 왜 그런 구조가 필요한지 설명할 수 있어야 한다.
 

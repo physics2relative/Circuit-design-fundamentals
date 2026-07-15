@@ -1,4 +1,4 @@
-# 09-06. Gray Pointer FIFO
+# 09-07. Gray Pointer FIFO
 
 Gray pointer FIFO는 asynchronous FIFO에서 pointer를 다른 clock domain으로 넘길 때 Gray code를 사용하는 구조이다. 목적은 pointer가 변하는 순간 여러 bit가 동시에 바뀌는 문제를 줄이는 것이다.
 

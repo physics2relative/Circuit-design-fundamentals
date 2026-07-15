@@ -1,4 +1,4 @@
-# 09-07. FIFO Verification Checklist
+# 09-08. FIFO Verification Checklist
 
 FIFO 검증은 단순히 data가 몇 개 들어가고 나오는지 보는 수준에서 끝나면 부족하다. 경계 조건, 동시 read/write, full/empty flag, reset, backpressure를 함께 확인해야 한다.
 
