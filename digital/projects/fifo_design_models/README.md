@@ -33,12 +33,12 @@ fifo_design_models/
 
 `rtl/async_fifo_gray.v`는 학습용으로 async FIFO 내부 구조가 명시적으로 보이도록 다음 module로 나누어 둔 형태이다.
 
-- `async_fifo_gray_mem`: shared memory array
+- `async_fifo_gray_mem`: shared memory array with `wclk` write and `rclk` synchronous read
 - `async_fifo_gray_sync`: Gray pointer 2-stage synchronizer
 - `async_fifo_gray_wptr_full`: write pointer, write address, full flag 생성 로직
 - `async_fifo_gray_rptr_empty`: read pointer, read address, empty flag 생성 로직
 
-Top module인 `async_fifo_gray`는 이 block들을 연결한다. Waveform을 볼 때는 `wbin_dbg/wgray_dbg`가 write-side pointer이고, `rbin_dbg/rgray_dbg`가 read-side pointer이다. `wq2_rgray_dbg`는 write domain으로 넘어온 read pointer, `rq2_wgray_dbg`는 read domain으로 넘어온 write pointer이다.
+Top module인 `async_fifo_gray`는 이 block들을 연결한다. Memory read는 `rclk`에 맞춰 `rdata` register로 샘플되는 synchronous read 형태이다. Waveform을 볼 때는 `wbin_dbg/wgray_dbg`가 write-side pointer이고, `rbin_dbg/rgray_dbg`가 read-side pointer이다. `wq2_rgray_dbg`는 write domain으로 넘어온 read pointer, `rq2_wgray_dbg`는 read domain으로 넘어온 write pointer이다.
 
 ## 실행
 

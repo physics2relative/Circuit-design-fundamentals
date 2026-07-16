@@ -43,6 +43,8 @@ module async_fifo_gray #(
         .wpush (wpush),
         .waddr (waddr),
         .wdata (wdata),
+        .rclk  (rclk),
+        .rpop  (rpop),
         .raddr (raddr),
         .rdata (rdata)
     );
@@ -107,12 +109,17 @@ module async_fifo_gray_mem #(
     input  wire                  wpush,
     input  wire [ADDR_WIDTH-1:0] waddr,
     input  wire [DATA_WIDTH-1:0] wdata,
+    input  wire                  rclk,
+    input  wire                  rpop,
     input  wire [ADDR_WIDTH-1:0] raddr,
     output wire [DATA_WIDTH-1:0] rdata
 );
     localparam DEPTH = (1 << ADDR_WIDTH);
 
     reg [DATA_WIDTH-1:0] mem [0:DEPTH-1];
+    reg [DATA_WIDTH-1:0] rdata_r;
+
+    wire [ADDR_WIDTH-1:0] raddr_next;
 
     always @(posedge wclk) begin
         if (wpush) begin
@@ -120,7 +127,17 @@ module async_fifo_gray_mem #(
         end
     end
 
-    assign rdata = mem[raddr];
+    // Synchronous read with one-entry look-ahead.
+    // If a pop occurs on this rclk edge, the read pointer also advances on
+    // this edge, so sample the next address to keep rdata aligned with the
+    // entry pointed to after the edge.
+    assign raddr_next = raddr + {{(ADDR_WIDTH-1){1'b0}}, rpop};
+
+    always @(posedge rclk) begin
+        rdata_r <= mem[raddr_next];
+    end
+
+    assign rdata = rdata_r;
 endmodule
 
 module async_fifo_gray_sync #(
