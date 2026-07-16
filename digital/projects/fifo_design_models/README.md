@@ -73,4 +73,4 @@ ALLOW_OPEN_SHM_OVERWRITE=1 bash sim/run_xrun.sh
 
 ## 개념 문서 연결
 
-관련 개념은 `../../concepts/09_memory_fifo_interface/README.md`에서 정리한다.
+관련 개념은 `../../concepts/08_memory_fifo_interface/README.md`에서 정리한다.

@@ -1,4 +1,4 @@
-# 09-03. FIFO Full / Empty Flags
+# 08-03. FIFO Full / Empty Flags
 
 FIFO flag는 외부 block이 write/read 가능 여부를 판단하는 기준이다. flag가 틀리면 overflow, underflow, data loss가 발생한다.
 

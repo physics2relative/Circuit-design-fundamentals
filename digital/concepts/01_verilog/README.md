@@ -19,7 +19,7 @@ Verilog로 어떻게 표현하는가?
 순차논리 이론       → ../04_sequential_logic/
 FSM 설계법          → ../05_fsm/
 setup/hold, CDC     → ../06_timing_sta/, ../07_clock_reset_cdc/
-FIFO/interface 등   → ../09_memory_fifo_interface/
+FIFO/interface 등   → ../08_memory_fifo_interface/
 ```
 
 ## Contents

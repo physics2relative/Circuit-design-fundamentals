@@ -1,4 +1,4 @@
-# 09-05. FIFO Depth, Burst Size, and Rate Matching
+# 08-05. FIFO Depth, Burst Size, and Rate Matching
 
 FIFO depth는 producer가 data를 넣는 속도와 consumer가 data를 가져가는 속도 사이의 차이를 얼마나 오래 흡수할지를 정하는 값이다. 단순히 “넉넉하게 크게” 잡는 문제가 아니라, burst, stall, 평균 bandwidth, 순간 throughput을 기준으로 계산해야 한다.
 

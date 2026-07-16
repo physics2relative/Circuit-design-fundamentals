@@ -1,4 +1,4 @@
-# 09-01. Memory Basics
+# 08-01. Memory Basics
 
 Memory는 여러 cycle에 걸쳐 data를 보관하기 위한 storage 구조이다. RTL에서는 register array처럼 작성할 수 있지만, 실제 구현에서는 크기와 access pattern에 따라 flip-flop array, latch array, SRAM macro, register file 등으로 달라질 수 있다.
 

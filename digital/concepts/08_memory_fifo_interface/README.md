@@ -1,4 +1,4 @@
-# 09. Memory, FIFO, and Interfaces
+# 08. Memory, FIFO, and Interfaces
 
 Memory, FIFO, interface는 data를 저장하고 block 사이의 흐름을 조절하는 구조이다. RTL 설계 관점에서는 `어디에 저장하는가`, `언제 쓰고 읽는가`, `가득 참/비어 있음은 어떻게 판단하는가`, `상대 block이 받을 수 없을 때 어떻게 멈추는가`를 명확히 하는 것이 핵심이다.
 

@@ -1,4 +1,4 @@
-# 09-06. Asynchronous FIFO Overview
+# 08-06. Asynchronous FIFO Overview
 
 Asynchronous FIFO는 write clock과 read clock이 서로 다른 FIFO이다. 서로 다른 clock domain 사이에서 multi-bit data를 안전하게 전달하기 위해 사용한다.
 

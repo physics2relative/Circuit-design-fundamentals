@@ -1,4 +1,4 @@
-# 09-02. Synchronous FIFO
+# 08-02. Synchronous FIFO
 
 Synchronous FIFO는 write와 read가 같은 clock domain에서 동작하는 FIFO이다. data를 입력된 순서대로 저장하고, 출력도 같은 순서로 내보낸다.
 

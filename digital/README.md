@@ -14,19 +14,27 @@ digital/
 
 ## Concepts
 
-- [Verilog](./concepts/01_verilog/README.md)
-- [Datapath and Number Systems](./concepts/02_datapath_number_systems/README.md)
-- [Combinational Logic](./concepts/03_combinational_logic/README.md)
-- [Sequential Logic](./concepts/04_sequential_logic/README.md)
-- [Finite State Machine](./concepts/05_fsm/README.md)
-- [Timing and STA](./concepts/06_timing_sta/README.md)
-- [Clock, Reset, and CDC](./concepts/07_clock_reset_cdc/README.md)
-- [Low Power Design](./concepts/08_low_power_clock_gating/README.md)
-- [Memory, FIFO, and Interfaces](./concepts/09_memory_fifo_interface/README.md)
+1. [Verilog](./concepts/01_verilog/README.md)
+2. [Datapath and Number Systems](./concepts/02_datapath_number_systems/README.md)
+3. [Combinational Logic](./concepts/03_combinational_logic/README.md)
+4. [Sequential Logic](./concepts/04_sequential_logic/README.md)
+5. [Finite State Machine](./concepts/05_fsm/README.md)
+6. [Timing and STA](./concepts/06_timing_sta/README.md)
+7. [Clock, Reset, and CDC](./concepts/07_clock_reset_cdc/README.md)
+8. [Memory, FIFO, and Interfaces](./concepts/08_memory_fifo_interface/README.md)
+9. [Low Power Design](./concepts/09_low_power_clock_gating/README.md)
+10. [Verification Basics](./concepts/10_verification_basics/README.md)
+11. [Synthesis and Implementation](./concepts/11_synthesis_implementation/README.md)
+12. [AMBA and AXI Interfaces](./concepts/12_amba_axi_interfaces/README.md)
+13. [Computer Architecture Basics](./concepts/13_computer_architecture_basics/README.md)
+14. [DFT and Scan Basics](./concepts/14_dft_scan_basics/README.md)
 
 ## Projects
 
 - [Digital Counter](./projects/digital_counter/README.md)
+- [CDC Behavioral Models](./projects/cdc_behavioral_models/README.md)
+- [Clock Gating ICG Experiment](./projects/clock_gating_icg_experiment/README.md)
+- [FIFO Design Models](./projects/fifo_design_models/README.md)
 
 ## Interview Questions
 

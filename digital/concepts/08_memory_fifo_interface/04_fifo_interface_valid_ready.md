@@ -1,4 +1,4 @@
-# 09-04. FIFO Interface and Valid-Ready
+# 08-04. FIFO Interface and Valid-Ready
 
 FIFO는 단순 storage가 아니라 block 사이의 dataflow를 조절하는 interface 역할을 한다. 이때 가장 흔한 방식이 valid-ready handshake이다.
 
