@@ -31,14 +31,14 @@ fifo_design_models/
 
 ## RTL 구조 관점
 
-`rtl/async_fifo_gray.v`는 학습용으로 async FIFO를 한 파일에 통합해 둔 형태이다. 구조적으로는 다음 네 부분으로 나누어 볼 수 있다.
+`rtl/async_fifo_gray.v`는 학습용으로 async FIFO 내부 구조가 명시적으로 보이도록 다음 module로 나누어 둔 형태이다.
 
-- memory array: `mem`
-- write control logic, 즉 wctl: `wbin`, `wgray`, `wq1_rgray`, `wq2_rgray`, `wfull_r`, `wpush` 관련 로직
-- read control logic, 즉 rctl: `rbin`, `rgray`, `rq1_wgray`, `rq2_wgray`, `rempty_r`, `rpop` 관련 로직
-- pointer crossing: Gray pointer를 2-stage synchronizer로 상대 clock domain에 전달하는 부분
+- `async_fifo_gray_mem`: shared memory array
+- `async_fifo_gray_sync`: Gray pointer 2-stage synchronizer
+- `async_fifo_gray_wptr_full`: write pointer, write address, full flag 생성 로직
+- `async_fifo_gray_rptr_empty`: read pointer, read address, empty flag 생성 로직
 
-Waveform을 볼 때는 `wbin_dbg/wgray_dbg`가 write-side pointer이고, `rbin_dbg/rgray_dbg`가 read-side pointer이다. `wq2_rgray_dbg`는 write domain으로 넘어온 read pointer, `rq2_wgray_dbg`는 read domain으로 넘어온 write pointer이다.
+Top module인 `async_fifo_gray`는 이 block들을 연결한다. Waveform을 볼 때는 `wbin_dbg/wgray_dbg`가 write-side pointer이고, `rbin_dbg/rgray_dbg`가 read-side pointer이다. `wq2_rgray_dbg`는 write domain으로 넘어온 read pointer, `rq2_wgray_dbg`는 read domain으로 넘어온 write pointer이다.
 
 ## 실행
 
