@@ -1,4 +1,4 @@
-# 1-6. Small-signal Modeling
+# 1-8. Small-signal Modeling
 
 Small-signal model은 nonlinear device를 bias point 근처에서 선형 회로로 바꿔 해석하는 방법이다. Amplifier 해석의 핵심 도구이다.
 

@@ -1,4 +1,4 @@
-# 1-5. BJT Basics
+# 1-7. BJT Basics
 
 BJT는 base-emitter junction 전압에 의해 collector current가 exponential하게 결정되는 소자이다. CMOS 공정 중심으로 공부하더라도 BJT는 diode, gm, exponential I-V, amplifier 개념을 이해하는 데 유용하다.
 

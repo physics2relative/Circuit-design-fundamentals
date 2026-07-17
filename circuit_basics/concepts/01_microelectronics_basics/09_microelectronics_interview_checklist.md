@@ -1,10 +1,21 @@
-# 1-7. Microelectronics Interview Checklist
+# 1-9. Microelectronics Interview Checklist
 
 ## 기본 해석
 
 - Large-signal과 small-signal 해석의 차이는 무엇인가?
 - Bias point가 왜 필요한가?
 - DC 해석 후 small-signal equivalent circuit으로 바꾸는 절차를 설명할 수 있는가?
+
+
+## Semiconductor device basics
+
+- Electron과 hole은 무엇인가?
+- n-type과 p-type doping의 차이는 무엇인가?
+- Drift current와 diffusion current의 차이는 무엇인가?
+- Mobility가 transistor drive에 어떤 영향을 주는가?
+- PN junction에서 depletion region이 생기는 이유는 무엇인가?
+- MOS capacitor에서 accumulation, depletion, inversion은 무엇인가?
+- Threshold voltage는 MOS capacitor 관점에서 어떻게 설명할 수 있는가?
 
 ## Diode
 

@@ -12,7 +12,7 @@ Diode, MOSFET, BJT에서 시작해 CMOS circuit과 analog amplifier로 이어지
 
 ## 학습 흐름
 
-1. Large-signal, bias point, small-signal 해석 관점을 이해한다.
+1. Carrier, drift/diffusion, PN junction, MOS capacitor를 먼저 잡고 MOSFET으로 넘어간다.
 2. CMOS inverter에서 noise margin, delay, power가 어떻게 생기는지 본다.
 3. VTH, load capacitance, PVT 변화가 timing과 power에 주는 영향을 연결한다.
 4. gm, ro, current mirror, differential pair로 analog gain block의 기반을 잡는다.

@@ -1,4 +1,4 @@
-# 1-2. PN Junction and Diode Basics
+# 1-3. PN Junction and Diode Basics
 
 Diode는 PN junction으로 이루어진 가장 기본적인 nonlinear device이다. Microelectronics에서 diode는 exponential I-V, rectification, small-signal resistance를 이해하는 출발점이다.
 

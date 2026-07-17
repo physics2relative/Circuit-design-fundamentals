@@ -1,4 +1,4 @@
-# 1-4. MOSFET I-V Regions
+# 1-6. MOSFET I-V Regions
 
 MOSFET의 동작 영역은 cutoff, triode, saturation으로 나눈다. Razavi식 회로 해석에서는 각 영역의 수식보다 “어떤 회로 역할을 하는가”가 중요하다.
 

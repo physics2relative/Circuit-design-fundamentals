@@ -1,4 +1,4 @@
-# 1-3. MOSFET Device Basics
+# 1-5. MOSFET Device Basics
 
 MOSFET은 gate 전압으로 channel의 전도도를 조절하는 field-effect device이다. Analog와 digital 모두에서 가장 중요한 소자이며, 회로 해석에서는 terminal voltage와 operating region을 기준으로 본다.
 
