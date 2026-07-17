@@ -24,10 +24,6 @@ digital/
 8. [Memory, FIFO, and Interfaces](./concepts/08_memory_fifo_interface/README.md)
 9. [Low Power Design](./concepts/09_low_power_clock_gating/README.md)
 10. [Verification Basics](./concepts/10_verification_basics/README.md)
-11. [Synthesis and Implementation](./concepts/11_synthesis_implementation/README.md)
-12. [AMBA and AXI Interfaces](./concepts/12_amba_axi_interfaces/README.md)
-13. [Computer Architecture Basics](./concepts/13_computer_architecture_basics/README.md)
-14. [DFT and Scan Basics](./concepts/14_dft_scan_basics/README.md)
 
 ## Projects
 

@@ -14,16 +14,10 @@
 8. [Memory, FIFO, and Interfaces](./08_memory_fifo_interface/README.md)
 9. [Low Power Design](./09_low_power_clock_gating/README.md)
 10. [Verification Basics](./10_verification_basics/README.md)
-11. [Synthesis and Implementation](./11_synthesis_implementation/README.md)
-12. [AMBA and AXI Interfaces](./12_amba_axi_interfaces/README.md)
-13. [Computer Architecture Basics](./13_computer_architecture_basics/README.md)
-14. [DFT and Scan Basics](./14_dft_scan_basics/README.md)
 
 ## 분류 기준
 
 - `01_verilog`: Verilog로 RTL을 어떻게 표현하는가
 - `02~05`: datapath, combinational/sequential logic, FSM 등 RTL 기본기
 - `06~09`: timing, CDC/FIFO, low power 등 implementation-aware 핵심 주제
-- `10~11`: verification과 synthesis/implementation flow
-- `12~13`: AMBA/AXI interface와 computer architecture/SoC context
-- `14_dft_scan_basics`: DFT와 scan 기본 개념
+- `10_verification_basics`: RTL 설계자가 알아야 할 기본 검증 흐름
