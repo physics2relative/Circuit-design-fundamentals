@@ -5,7 +5,7 @@
 ## Repository Structure
 
 ```text
-circuit_basics/       # MOS, CMOS inverter, delay/power/PVT, basic analog blocks 등 공통 회로 기본기
+circuit_basics/       # microelectronics, CMOS inverter, delay/power/PVT, basic analog blocks 등 공통 회로 기본기
 
 analog/
   concepts/             # small-signal, current mirror, differential pair, OP AMP 등 아날로그 심화 개념 정리

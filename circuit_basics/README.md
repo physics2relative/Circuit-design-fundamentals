@@ -6,14 +6,14 @@
 
 ```text
 circuit_basics/
-  concepts/   # MOS/CMOS/VLSI/analog 기본 개념
+  concepts/   # microelectronics/CMOS/VLSI/analog 기본 개념
   projects/   # Spectre/Virtuoso 기반 기초 회로 실습
   assets/     # 직접 그린 회로도, VTC, waveform, small-signal 그림
 ```
 
 ## Concepts
 
-1. [MOS Microelectronics](./concepts/01_mos_microelectronics/README.md)
+1. [Microelectronics Basics](./concepts/01_microelectronics_basics/README.md)
 2. [CMOS Inverter and VLSI Basics](./concepts/02_cmos_inverter_vlsi/README.md)
 3. [Delay, Power, and PVT](./concepts/03_delay_power_pvt/README.md)
 4. [Basic Analog Blocks](./concepts/04_basic_analog_blocks/README.md)
