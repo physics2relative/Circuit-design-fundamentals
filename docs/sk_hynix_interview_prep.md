@@ -56,8 +56,8 @@ PVT variation과 소자 파라미터 변화
 ### 레포 내 관련 섹션
 
 ```text
-circuit_basics/concepts/02_microelectronics_basics/
-circuit_basics/concepts/04_delay_power_pvt/
+semiconductor_devices/concepts/
+circuit_basics/concepts/03_delay_power_pvt/
 ```
 
 ---
@@ -152,8 +152,8 @@ process scaling 영향
 ### 레포 내 관련 섹션
 
 ```text
-circuit_basics/concepts/03_cmos_inverter_vlsi/
-circuit_basics/concepts/04_delay_power_pvt/
+circuit_basics/concepts/02_cmos_inverter_vlsi/
+circuit_basics/concepts/03_delay_power_pvt/
 ```
 
 ---

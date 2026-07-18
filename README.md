@@ -5,10 +5,12 @@
 ## Repository Structure
 
 ```text
-circuit_basics/       # microelectronics, CMOS inverter, delay/power/PVT, basic analog blocks 등 공통 회로 기본기
+semiconductor_devices/ # carrier, PN junction, MOS capacitor, MOSFET, BJT 등 반도체 소자 기본
+
+circuit_basics/       # 회로이론, CMOS inverter, delay/power/PVT 등 공통 회로 기본기
 
 analog/
-  concepts/             # small-signal, current mirror, differential pair, OP AMP 등 아날로그 심화 개념 정리
+  concepts/             # amplifier, current mirror, differential pair, feedback, OP AMP 등 아날로그 회로 개념 정리
   projects/             # Virtuoso/Spectre, OP AMP 등 아날로그 실습/프로젝트
   interview_questions/  # 아날로그 면담/면접 질문
   assets/               # 아날로그 회로도 이미지, 파형 캡처, 직접 그린 그림
@@ -26,6 +28,7 @@ glossary.md             # 용어 정리
 
 ## Main Sections
 
+- [Semiconductor Devices](./semiconductor_devices/README.md)
 - [Circuit Basics](./circuit_basics/README.md)
 - [Analog Design](./analog/README.md)
 - [Digital Design](./digital/README.md)
