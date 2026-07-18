@@ -33,9 +33,15 @@
 
 ## BJT
 
-- BJT의 forward active region은 어떤 bias 조건인가?
-- Collector current와 VBE의 관계는 어떤 형태인가?
-- BJT의 gm은 bias current와 어떤 관계인가?
+- BJT의 cutoff, forward active, saturation region은 각각 어떤 bias 조건인가?
+- Forward active region에서 collector current와 VBE의 관계는 어떤 형태인가?
+- Thermal voltage `VT`는 무엇이고, 상온에서 대략 얼마인가?
+- BJT의 `gm = IC / VT`가 의미하는 것은 무엇인가?
+- `rπ = β / gm`는 어떤 input resistance를 의미하는가?
+- Early effect는 무엇인가?
+- BJT의 output resistance `ro ≈ VA / IC`는 어디서 나오는가?
+- Common-emitter amplifier gain `Av ≈ -gm * (RC || ro)`를 설명할 수 있는가?
+- MOSFET의 channel length modulation과 BJT의 Early effect를 비교할 수 있는가?
 - MOSFET과 BJT의 입력 특성 차이는 무엇인가?
 
 ## 좋은 답변 방향
