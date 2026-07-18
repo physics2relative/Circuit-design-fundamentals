@@ -1,4 +1,4 @@
-# 5-2. Common-source Amplifier
+# 5-3. Common-source Amplifier
 
 Common-source amplifier는 MOS analog amplifier의 기본 구조이다. 입력은 gate, 출력은 drain에서 보고 source는 AC ground에 가깝게 둔다.
 

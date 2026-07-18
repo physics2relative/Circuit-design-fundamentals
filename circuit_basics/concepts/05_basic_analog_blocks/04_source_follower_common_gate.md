@@ -1,4 +1,4 @@
-# 5-3. Source Follower and Common-gate
+# 5-4. Source Follower and Common-gate
 
 Common-source 외에도 source follower와 common-gate 구조는 analog 회로에서 자주 쓰인다.
 

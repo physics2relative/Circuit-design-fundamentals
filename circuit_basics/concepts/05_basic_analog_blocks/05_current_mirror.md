@@ -1,4 +1,4 @@
-# 5-4. Current Mirror
+# 5-5. Current Mirror
 
 Current mirror는 기준 전류를 다른 branch에 복사하는 회로이다. Bias 회로와 active load에서 핵심적으로 사용된다.
 

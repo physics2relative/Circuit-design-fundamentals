@@ -1,4 +1,4 @@
-# 5-5. Differential Pair
+# 5-6. Differential Pair
 
 Differential pair는 두 입력의 차이를 증폭하는 analog 회로의 핵심 구조이다. Op-amp input stage의 기본이 된다.
 
