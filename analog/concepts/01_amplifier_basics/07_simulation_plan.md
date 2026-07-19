@@ -1,4 +1,4 @@
-# 1-6. Simulation Plan
+# 1-7. Simulation Plan
 
 Amplifier basics는 Virtuoso/Spectre 또는 HSPICE로 다음 항목을 확인하면 좋다.
 

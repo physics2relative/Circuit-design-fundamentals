@@ -1,10 +1,11 @@
-# 1-7. Amplifier Interview Checklist
+# 1-8. Amplifier Interview Checklist
 
 ## Port model
 
 - Amplifier를 two-port network로 본다는 것은 무슨 의미인가?
 - Input resistance가 크면 source loading이 왜 줄어드는가?
 - Output resistance가 낮으면 voltage load driving에 왜 유리한가?
+- Output resistance를 test source로 구한다는 것은 무슨 의미인가?
 - Current source로 동작하려면 output resistance가 왜 커야 하는가?
 
 ## Amplifier type
@@ -17,14 +18,18 @@
 
 - Common-source amplifier가 inverting인 이유는 무엇인가?
 - Gain이 `-gm * Rout` 형태로 나오는 이유는 무엇인가?
+- Common-source에서 `Rout ≈ RD || ro`가 되는 이유는 무엇인가?
 - Saturation 조건이 깨지면 어떤 문제가 생기는가?
 
 ## Source follower / common-gate
 
 - Source follower가 buffer로 쓰이는 이유는 무엇인가?
 - Source follower gain이 1보다 작은 이유는 무엇인가?
+- Source follower에서 `Rs`가 작아지면 gain이 왜 더 낮아지는가?
+- Source follower의 `Rout`이 대략 `1/gm` 수준으로 낮아지는 이유는 무엇인가?
 - Common-gate input resistance가 낮은 이유는 무엇인가?
 - Common-gate가 wideband stage로 쓰일 수 있는 이유는 무엇인가?
+- Cascode가 output resistance를 키우는 대신 headroom을 희생하는 이유는 무엇인가?
 
 ## Simulation
 
