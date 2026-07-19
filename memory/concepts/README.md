@@ -4,14 +4,14 @@
 
 ## 목차
 
-1. [Memory Overview](./01_memory_overview/README.md)
-2. [SRAM Basics](./02_sram_basics/README.md)
-3. [DRAM Basics](./03_dram_basics/README.md)
-4. [NAND Flash Basics](./04_nand_flash_basics/README.md)
-5. [Memory Peripheral Circuits](./05_memory_peripheral_circuits/README.md)
-6. [Memory Timing and Interface](./06_memory_timing_interface/README.md)
-7. [Reliability, Test, and Yield](./07_reliability_test_yield/README.md)
-8. [Memory Interview Checklist](./08_memory_interview_checklist/README.md)
+1. [Memory Overview](./01_memory_overview.md)
+2. [SRAM Basics](./02_sram_basics.md)
+3. [DRAM Basics](./03_dram_basics.md)
+4. [NAND Flash Basics](./04_nand_flash_basics.md)
+5. [Memory Peripheral Circuits](./05_memory_peripheral_circuits.md)
+6. [Memory Timing and Interface](./06_memory_timing_interface.md)
+7. [Reliability, Test, and Yield](./07_reliability_test_yield.md)
+8. [Memory Interview Checklist](./08_memory_interview_checklist.md)
 
 ## 핵심 비교축
 
