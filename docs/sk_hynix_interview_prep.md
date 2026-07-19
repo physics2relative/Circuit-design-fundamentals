@@ -368,3 +368,25 @@ DRAM은 capacitor에 charge를 저장해서 데이터를 표현한다. 하지만
 ```text
 PVT는 process, voltage, temperature 변화이다. Process가 바뀌면 VTH, mobility, Cox, Leff, capacitance, wire RC 등이 바뀌고, voltage는 overdrive와 dynamic power에 직접 영향을 준다. Temperature는 mobility, VTH, leakage를 바꾼다. 이 변화가 current drive, delay, leakage, margin을 바꾸므로 timing/power/corner 분석이 필요하다.
 ```
+---
+
+## 8. 메모리 기본 지식
+
+SK hynix 면접에서는 메모리 회사 특성상 SRAM/DRAM/NAND의 저장 원리, read/write 동작, refresh, sense amplifier, reliability 이슈가 직무지식과 반도체 기초지식 사이에서 연결될 수 있다.
+
+### 우선순위
+
+```text
+DRAM: 1T1C, destructive read, refresh, sense amplifier, row/column timing
+SRAM: 6T cell, read/write margin, cache 용도
+NAND: Vth state 저장, page/block 단위, ECC/wear leveling
+Peripheral: decoder, wordline, bitline, precharge, sense amp, write driver
+Reliability: retention, disturb, endurance, soft error, repair
+```
+
+### 레포 내 관련 섹션
+
+```text
+memory/concepts/
+```
+

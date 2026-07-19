@@ -9,6 +9,8 @@ semiconductor_devices/ # carrier, PN junction, MOS capacitor, MOSFET, BJT 등 �
 
 circuit_basics/       # 회로이론, CMOS inverter, delay/power/PVT 등 공통 회로 기본기
 
+memory/              # SRAM, DRAM, NAND Flash, peripheral/timing/reliability 기본
+
 analog/
   concepts/             # amplifier, current mirror, differential pair, feedback, OP AMP 등 아날로그 회로 개념 정리
   projects/             # Virtuoso/Spectre, OP AMP 등 아날로그 실습/프로젝트
@@ -30,6 +32,7 @@ glossary.md             # 용어 정리
 
 - [Semiconductor Devices](./semiconductor_devices/README.md)
 - [Circuit Basics](./circuit_basics/README.md)
+- [Memory Fundamentals](./memory/README.md)
 - [Analog Design](./analog/README.md)
 - [Digital Design](./digital/README.md)
 - [Resources](./resources.md)
