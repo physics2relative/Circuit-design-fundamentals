@@ -1,0 +1,5 @@
+sim/xrun_work/
+*.log
+*.key
+*.history
+*.diag
