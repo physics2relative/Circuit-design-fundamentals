@@ -1,0 +1,33 @@
+// AC characterization of cdf_analog_sandbox/cs_resistive_load
+simulator lang=spectre
+global 0
+parameters VIN_BIAS=0.714 VIN_AMP=10m FIN=1M CL=100f TSTOP=5u MAXSTEP=5n
+include "/user/choi.jw/PROJECT/LIB/UMC/40n/G-01-EHV40N-1.1V8V+-16V-LP-DSM/G09-FDK/58.56.25.242_D_G-9FD-EHV40N-1.1V_8V_+_-16V-LP_UMK40FDKEHC0080OA-FDK-Ver.A07_PB/Models/Spectre/ehv40lp_hv_v016.lib.scs" section=tt
+
+subckt cs_resistive_load GND VDD VIN VOUT
+    NM0 (VOUT VIN GND GND) n_rvt m=1 mf=1 w=800n l=80n nf=1 ad=104f as=104f \
+        pd=1.86u ps=1.86u sa=130n sb=130n sd=0 sca=56.8182 scb=21.8038m \
+        scc=5.04572m mis_flag=1 cctg_flag=1 rdscon_flag=1 rgate_flag=1
+    R0 (VDD VOUT) resistor r=5.6K
+ends cs_resistive_load
+
+V2 (VDD 0) vsource dc=1.1 type=dc
+V0 (VIN 0) vsource type=sine dc=VIN_BIAS sinedc=VIN_BIAS ampl=VIN_AMP freq=FIN
+I0 (0 VDD VIN VOUT) cs_resistive_load
+CLOAD (VOUT 0) capacitor c=CL
+
+simulatorOptions options psfversion="1.4.0" reltol=1e-3 vabstol=1e-6 \
+    iabstol=1e-12 temp=27 tnom=27 scalem=1.0 scale=1.0 gmin=1e-12 rforce=1 \
+    maxnotes=5 maxwarns=5 digits=5 cols=80 pivrel=1e-3 \
+    sensfile="../psf/sens.output" checklimitdest=psf
+
+dcOp dc write="spectre.dc" maxiters=150 maxsteps=10000 annotate=status
+tran tran stop=TSTOP maxstep=MAXSTEP annotate=status
+modelParameter info what=models where=rawfile
+element info what=inst where=rawfile
+outputParameter info what=output where=rawfile
+designParamVals info what=parameters where=rawfile
+primitives info what=primitives where=rawfile
+subckts info what=subckts where=rawfile
+saveOptions options save=allpub currents=all subcktprobelvl=2
+save *:region *:id *:vgs *:vds *:vth *:vdsat *:gm *:gds *:gmoverid *:self_gain *:rout sigtype=dev devtype=bsim4

@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "project": "01_cs_resistive_load",
+  "generator": "analog/sim/run_and_plot.py",
+  "operating_point": {
+    "enabled": true,
+    "device_types": [
+      "bsim4"
+    ],
+    "parameters": [
+      "region",
+      "id",
+      "vgs",
+      "vds",
+      "vth",
+      "vdsat",
+      "gm",
+      "gds",
+      "gmoverid",
+      "self_gain",
+      "rout"
+    ],
+    "derived": {
+      "sat_margin_abs": "abs(vds) - abs(vdsat)"
+    }
+  },
+  "testbenches": {
+    "tb_p01_cs_basic": {
+      "dut": "cs_resistive_load",
+      "analysis": "OP + DC",
+      "setup": "VDD=1.1 V, VIN_BIAS=0→1.1 V, linear step=1 mV, temp=27 °C",
+      "plots": [
+        {
+          "filename": "01_dc_transfer.svg",
+          "analysis_type": "dc",
+          "title": "CS DC Transfer",
+          "x": "vin",
+          "signals": {
+            "vin": "VIN",
+            "vout": "VOUT"
+          },
+          "series": [
+            {
+              "expr": "vout",
+              "label": "VOUT"
+            }
+          ],
+          "xlabel": "VIN (V)",
+          "ylabel": "VOUT (V)",
+          "meaning": "CS의 반전 전달 특성과 bias 가능한 구간을 보여 준다.",
+          "check": "출력이 rail에 붙는 구간, 음의 기울기 구간과 clipping 경계를 확인한다."
+        },
+        {
+          "filename": "02_drain_current.svg",
+          "analysis_type": "dc",
+          "title": "CS Drain Current",
+          "x": "vin",
+          "signals": {
+            "vin": "VIN",
+            "id": "I0.NM0:1"
+          },
+          "series": [
+            {
+              "expr": "abs(id)",
+              "label": "|ID|"
+            }
+          ],
+          "xlabel": "VIN (V)",
+          "ylabel": "Drain current (A)",
+          "meaning": "입력 전압에 따라 NMOS가 cutoff에서 conduction 상태로 이동하는 과정을 보여 준다.",
+          "check": "VOUT 변화가 시작되는 지점과 ID 증가 지점이 일치하는지 확인한다."
+        }
+      ]
+    },
+    "tb_p01_cs_ac": {
+      "dut": "cs_resistive_load",
+      "analysis": "OP + AC + CL sweep",
+      "setup": "VIN AC magnitude=1, dec=100, 1 Hz→10 GHz, CL={10 fF, 100 fF, 1 pF}",
+      "plots": [
+        {
+          "filename": "03_cs_gain.svg",
+          "analysis_type": "ac",
+          "title": "CS Gain Magnitude",
+          "x": "freq",
+          "signals": {
+            "freq": "freq",
+            "vin": "VIN",
+            "vout": "VOUT"
+          },
+          "series": [
+            {
+              "expr": "db20(vout/vin)",
+              "label": "Gain"
+            }
+          ],
+          "xlabel": "Frequency (Hz)",
+          "ylabel": "Gain (dB)",
+          "meaning": "저주파 이득과 pole에 의한 대역폭 제한을 보여 준다.",
+          "check": "DC 근처 이득, -3 dB 주파수와 CL 증가에 따른 bandwidth 감소를 확인한다.",
+          "x_scale": "log"
+        },
+        {
+          "filename": "04_cs_phase.svg",
+          "analysis_type": "ac",
+          "title": "CS Phase",
+          "x": "freq",
+          "signals": {
+            "freq": "freq",
+            "vin": "VIN",
+            "vout": "VOUT"
+          },
+          "series": [
+            {
+              "expr": "phase(vout/vin)",
+              "label": "Phase"
+            }
+          ],
+          "xlabel": "Frequency (Hz)",
+          "ylabel": "Phase (deg)",
+          "meaning": "반전 증폭기 위상과 pole 누적을 보여 준다.",
+          "check": "저주파에서 약 180° 반전되고 pole 이후 위상이 추가로 변하는지 확인한다.",
+          "x_scale": "log"
+        }
+      ]
+    },
+    "tb_p01_cs_transient": {
+      "dut": "cs_resistive_load",
+      "analysis": "OP + transient + input-amplitude sweep",
+      "setup": "VIN_BIAS=0.714 V, CL=100 fF, FIN={1 MHz, 365.235 MHz}, VIN_AMP={10, 50, 100, 180, 200, 220, 250, 300, 350, 380 mV peak} at 1 MHz",
+      "plots": [
+        {
+          "filename": "05_cs_transient_waveform.svg",
+          "analysis_type": "tran",
+          "title": "CS Transient Small-Signal Response",
+          "x": "time",
+          "signals": {
+            "time": "time",
+            "vin": "VIN",
+            "vout": "VOUT"
+          },
+          "series": [
+            {
+              "expr": "1000*(vin-0.714)",
+              "label": "VIN - 0.714 V"
+            },
+            {
+              "expr": "1000*(vout-0.55)",
+              "label": "VOUT - 0.55 V"
+            }
+          ],
+          "xlabel": "Time (s)",
+          "ylabel": "Centered voltage (mV)",
+          "meaning": "DC bias를 제거한 입력과 출력 파형으로 AC small-signal gain과 위상 관계를 시간 영역에서 확인한다.",
+          "check": "1 MHz에서 약 2.27 V/V의 반전 이득이 나타나고, -3 dB 주파수에서 출력 진폭이 저주파의 약 0.707배인지 확인한다."
+        }
+      ]
+    },
+    "tb_p01_source_follower": {
+      "dut": "source_follower",
+      "analysis": "OP + DC + AC + transient",
+      "setup": "VIN DC=0→1.1 V, AC dec=100 1 Hz→10 GHz, small step=20 mV",
+      "plots": [
+        {
+          "filename": "06_source_follower_transfer.svg",
+          "analysis_type": "dc",
+          "title": "Source Follower DC Transfer",
+          "x": "vin",
+          "signals": {
+            "vin": "VIN",
+            "vout": "VOUT"
+          },
+          "series": [
+            {
+              "expr": "vout",
+              "label": "VOUT"
+            }
+          ],
+          "xlabel": "VIN (V)",
+          "ylabel": "VOUT (V)",
+          "meaning": "입력과 같은 방향으로 움직이지만 VGS만큼 level shift된 출력을 보여 준다.",
+          "check": "기울기가 1보다 작고 bias current source가 saturation을 유지하는 범위를 확인한다."
+        }
+      ]
+    },
+    "tb_p01_common_gate": {
+      "dut": "common_gate",
+      "analysis": "OP + DC + AC",
+      "setup": "Gate bias 고정, source AC magnitude=1, dec=100, 1 Hz→10 GHz",
+      "plots": [
+        {
+          "filename": "07_common_gate_gain.svg",
+          "analysis_type": "ac",
+          "title": "Common-Gate Gain",
+          "x": "freq",
+          "signals": {
+            "freq": "freq",
+            "vin": "VIN",
+            "vout": "VOUT"
+          },
+          "series": [
+            {
+              "expr": "db20(vout/vin)",
+              "label": "Gain"
+            }
+          ],
+          "xlabel": "Frequency (Hz)",
+          "ylabel": "Gain (dB)",
+          "meaning": "비반전 전압 이득과 Miller multiplication이 작은 주파수 응답을 보여 준다.",
+          "check": "저주파 위상이 비반전인지, CS와 비교해 대역폭이 넓은지 확인한다.",
+          "x_scale": "log"
+        }
+      ]
+    }
+  }
+}
