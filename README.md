@@ -85,8 +85,6 @@ analog/
 - [Analog Design](./analog/README.md)
 - [Digital Design](./digital/README.md)
 - [Analog Practice Roadmap](./analog/ROADMAP.md)
-- [Resources](./resources.md)
-- [Glossary](./glossary.md)
 
 ## Tools and Evidence
 
