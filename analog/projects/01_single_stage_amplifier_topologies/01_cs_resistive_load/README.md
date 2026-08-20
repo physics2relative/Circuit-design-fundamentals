@@ -29,7 +29,7 @@ MOS 동작영역과 연결하여 clipping 원인 분석
 ### 2-1. 회로 구조
 
 <p align="center">
-  <img src="./figures/schematic/01_dut_cs_resistive_load.png" width="720" alt="Resistive-load common-source DUT schematic">
+  <img src="./figures/schematic/01_dut_cs_resistive_load.svg" width="720" alt="Resistive-load common-source DUT schematic">
 </p>
 
 *그림 1. `cdf_analog_sandbox/cs_resistive_load` DUT schematic*
@@ -66,7 +66,7 @@ Virtuoso OA cell은 공용 sandbox와 testbench library에 두고, 이 프로젝
 ## 3. Step 1: DC 동작점 설정
 
 <p align="center">
-  <img src="./figures/schematic/02_tb_dc_bias.png" width="1000" alt="DC bias testbench schematic">
+  <img src="./figures/schematic/02_tb_dc_bias.svg" width="1000" alt="DC bias testbench schematic">
 </p>
 
 *그림 2. `tb_p01_cs_basic`: `VIN_BIAS`를 sweep하여 `ID`와 `VOUT`을 결정하는 testbench*
@@ -141,7 +141,7 @@ Spectre 결과는 `-2.268 V/V`, 즉 magnitude `7.111 dB`로 손계산과 잘 일
 ## 5. Step 3: 부하 커패시턴스와 bandwidth
 
 <p align="center">
-  <img src="./figures/schematic/03_tb_ac_response.png" width="1000" alt="AC response testbench schematic">
+  <img src="./figures/schematic/03_tb_ac_response.svg" width="1000" alt="AC response testbench schematic">
 </p>
 
 *그림 3. `tb_p01_cs_ac`: AC magnitude가 1인 입력과 가변 `CL`을 사용한 testbench*
@@ -169,7 +169,7 @@ fp ≈ 1 / (2πRoutCL)
 ## 6. Step 4: AC 결과의 transient 검증
 
 <p align="center">
-  <img src="./figures/schematic/04_tb_transient.png" width="1000" alt="Transient testbench schematic">
+  <img src="./figures/schematic/04_tb_transient.svg" width="1000" alt="Transient testbench schematic">
 </p>
 
 *그림 4. `tb_p01_cs_transient`: 입력 주파수와 진폭을 변수로 둔 testbench. 같은 회로를 gain compression과 clipping sweep에도 사용한다.*

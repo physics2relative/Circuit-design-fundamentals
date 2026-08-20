@@ -14,7 +14,7 @@
 ## Analog CMOS Design
 
 <p align="center">
-  <img src="./analog/projects/01_single_stage_amplifier_topologies/01_cs_resistive_load/figures/schematic/01_dut_cs_resistive_load.png" width="620" alt="Resistive-load common-source schematic">
+  <img src="./analog/projects/01_single_stage_amplifier_topologies/01_cs_resistive_load/figures/schematic/01_dut_cs_resistive_load.svg" width="620" alt="Resistive-load common-source schematic">
 </p>
 
 현재 공개된 아날로그 대표 실습은 저항 부하 NMOS common-source 증폭기이다. 단순히 회로를 구성하는 데서 끝내지 않고 하나의 동작점을 기준으로 DC, AC와 transient 결과를 연결한다.
@@ -91,7 +91,7 @@ analog/
 | 영역 | 사용 환경 | 저장소에 남기는 근거 |
 |---|---|---|
 | Digital | Verilog, Cadence Xcelium, SimVision | RTL, testbench, scenario 설명, waveform 해석 |
-| Analog | Cadence Virtuoso IC6.1.8, Spectre 21.1, UMC 40 nm PDK | schematic PNG, 측정 CSV, 결과 SVG, 설계 과정 문서 |
+| Analog | Cadence Virtuoso IC6.1.8, Spectre 21.1, UMC 40 nm PDK | schematic SVG, 측정 CSV, 결과 SVG, 설계 과정 문서 |
 
 ## Scope and Artifact Policy
 

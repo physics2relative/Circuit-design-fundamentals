@@ -1,73 +1,73 @@
-printf("CDF schematic export start\n")
+printf("CDF schematic vector export start\n")
 
-procedure(cdfExportSchematic(libName cellName fileName)
-  let((win ok)
-    printf("CDF_EXPORT_OPEN %s/%s/schematic\n" libName cellName)
-    win = deOpenCellView(
-      libName
-      cellName
-      "schematic"
-      "schematic"
-      list(list(0 0) list(1600 1000))
-      "r"
-    )
-
-    if(win then
-      ok = hiExportImage(
-        ?fileName fileName
-        ?window win
-        ?exportRegion 'entireDesign
-        ?width 2400
-        ?transparentBG nil
-        ?colorType 'fullColor
-        ?windowProps list(list("drawGridOn" nil) list("drawAxesOn" nil))
-        ?verbose t
-      )
-      printf("CDF_EXPORT_RESULT %s/%s ok=%L file=%s\n"
-        libName cellName ok fileName)
-      hiCloseWindow(win)
-      ok
-    else
-      printf("CDF_EXPORT_ERROR failed_to_open %s/%s/schematic\n"
-        libName cellName)
+procedure(cdfPlotSchematic(libName cellName outputFile)
+  let((ok)
+    schPlotOptions = list(
       nil
+      'library libName
+      'cell cellName
+      'view "schematic"
+      'version "0.0"
+      'multisheet nil
+      'indexsheet nil
+      'hierarchy nil
+      'copy 1
+      'outputfile outputFile
+      'plotter "EPS"
+      'plotToFile t
+      'plotterType "epsfC"
+      'papersize "Unlimited"
+      'plotsize list(8.0 6.5)
+      'offset list(0.0 0.0)
+      'unit "inches"
+      'orientation "Automatic"
+      'display "display"
+      'tmpdir getShellEnvVar("CDF_SCHEMATIC_EPS_DIR")
+      'mail nil
     )
+
+    printf("CDF_VECTOR_EXPORT %s/%s/schematic -> %s\n"
+      libName cellName outputFile)
+    ok = schPlot()
+    printf("CDF_VECTOR_RESULT %s/%s ok=%L\n" libName cellName ok)
+    ok
   )
 )
 
-let((outDir results)
-  outDir = getShellEnvVar("CDF_SCHEMATIC_OUTPUT_DIR")
-  if(outDir && outDir != "" then
+let((epsDir results)
+  epsDir = getShellEnvVar("CDF_SCHEMATIC_EPS_DIR")
+
+  if(epsDir && epsDir != "" then
     results = list(
-      cdfExportSchematic(
+      cdfPlotSchematic(
         "cdf_analog_sandbox"
         "cs_resistive_load"
-        strcat(outDir "/01_dut_cs_resistive_load.png")
+        strcat(epsDir "/01_dut_cs_resistive_load.eps")
       )
-      cdfExportSchematic(
+      cdfPlotSchematic(
         "cdf_analog_tb"
         "tb_p01_cs_basic"
-        strcat(outDir "/02_tb_dc_bias.png")
+        strcat(epsDir "/02_tb_dc_bias.eps")
       )
-      cdfExportSchematic(
+      cdfPlotSchematic(
         "cdf_analog_tb"
         "tb_p01_cs_ac"
-        strcat(outDir "/03_tb_ac_response.png")
+        strcat(epsDir "/03_tb_ac_response.eps")
       )
-      cdfExportSchematic(
+      cdfPlotSchematic(
         "cdf_analog_tb"
         "tb_p01_cs_transient"
-        strcat(outDir "/04_tb_transient.png")
+        strcat(epsDir "/04_tb_transient.eps")
       )
     )
 
     if(member(nil results) then
-      printf("CDF_EXPORT_FAILED one_or_more_exports_failed\n")
+      printf("CDF_VECTOR_EXPORT_FAILED one_or_more_plots_failed\n")
     else
-      printf("CDF_EXPORT_COMPLETE count=4 output=%s\n" outDir)
+      printf("CDF_VECTOR_EXPORT_COMPLETE count=4 output=%s\n" epsDir)
     )
   else
-    printf("CDF_EXPORT_FAILED CDF_SCHEMATIC_OUTPUT_DIR_is_not_set\n")
+    printf("CDF_VECTOR_EXPORT_FAILED CDF_SCHEMATIC_EPS_DIR_is_not_set\n")
   )
 )
 
